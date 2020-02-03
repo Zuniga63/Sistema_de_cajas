@@ -1,0 +1,249 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="Control_de_cajas.MyResourceDictionary"
+                    xmlns:local="clr-namespace:Control_de_cajas"
+                    xmlns:converts="clr-namespace:Utilidades">
+
+    <converts:ConvertStringToVisibility x:Key="ErrorVisibility"/>
+    <converts:ConvertBooleanToColorBackgraund x:Key="BooleanToColorBackground"/>
+    <converts:ConvertIntToColorBackgraund x:Key="IntToColoBackground"/>
+    <converts:ConvertBooleanToVisibilityCollapsed x:Key="BoleanToVisivility"/>
+
+    <!--#region ESTILOS DE LOS TEXTBLOCK-->
+    <Style x:Key="EstiloFuenteEtiqueta" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Palatino Linotype"/>
+    </Style>
+
+    <Style x:Key="CabeceraApp" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Titulo1" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Titulo2" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Subtitulo1" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="NombreCaja" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="DineroCaja" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style x:Key="Nombre1" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Nombre2" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="Basica1" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="Basica2" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="Error" TargetType="TextBlock" BasedOn="{StaticResource EstiloFuenteEtiqueta}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="Margin" Value="5,1,5,1"/>
+    </Style>
+    <!--#endregion-->
+
+    <Style x:Key="EstiloFuenteButtom" TargetType="Button">
+        <Setter Property="FontFamily" Value="Palatino Linotype"/>
+    </Style>
+
+    <Style x:Key="ButtomBasico" TargetType="Button" BasedOn="{StaticResource EstiloFuenteButtom}">
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+    
+    <!--#region ESTILOS DE LOS TEXTBOX-->
+    <Style x:Key="EstiloFuenteTextBox" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Palatino Linotype"/>
+    </Style>
+
+    <Style x:Key="EstiloCajaTextoSencilla" TargetType="TextBox" BasedOn="{StaticResource EstiloFuenteTextBox}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="FontSize" Value="12"/>
+        <EventSetter Event="GotFocus" Handler="Txt_GotFocus"/>
+        <EventSetter Event="GotMouseCapture" Handler="Txt_GotMouseFocus"/>
+        <EventSetter Event="LostFocus" Handler="Txt_LostFocus"/>
+    </Style>
+
+    <Style x:Key="EstiloCajaTextoDoble" TargetType="TextBox" BasedOn="{StaticResource EstiloFuenteTextBox}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="FontSize" Value="16"/>
+        <EventSetter Event="GotFocus" Handler="Txt_GotFocus"/>
+        <EventSetter Event="GotMouseCapture" Handler="Txt_GotMouseFocus"/>
+        <EventSetter Event="LostFocus" Handler="Txt_LostFocus"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="CajaDeMoneda" TargetType="TextBox" BasedOn="{StaticResource EstiloCajaTextoSencilla}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+    
+    
+    <!--#endregion-->
+
+    <Style x:Key="DatePickerBasico" TargetType="DatePicker">
+        <Setter Property="FontFamily" Value="Palatino Linotype"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+    
+    <Style x:Key="DataGridBasico" TargetType="DataGrid">
+        <Setter Property="FontFamily" Value="Palatino Linotype"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="AlternatingRowBackground" Value="LightGray"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <LinearGradientBrush x:Key="GridBackGround" EndPoint="1,0.5" StartPoint="0,0.5">
+        <GradientStop Color="#FF000000" Offset="0"/>
+        <GradientStop Color="#FF121111" Offset="1"/>
+        <GradientStop Color="#FF605D5D" Offset="0.50"/>
+    </LinearGradientBrush>
+    
+    <Style x:Key="HeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="{StaticResource GridBackGround }" />
+        <Setter Property="Foreground" Value="WhiteSmoke" />
+    </Style>
+
+    <Style x:Key="MoneyCellStyle" TargetType="{x:Type DataGridCell}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+    
+    <!--#region DATA TEMPLATE-->
+    <DataTemplate x:Key="UserDT">
+        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Background="{Binding IsSelected, Converter={StaticResource BooleanToColorBackground}}">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource Nombre1}" Text="{Binding UserName}"/>
+                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1"/>
+
+                <TextBlock Grid.Row="2" Style="{StaticResource Basica1}">
+                    Cajas:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding Boxs}"/>
+                </TextBlock>
+
+                <TextBlock Grid.Row="3" Style="{StaticResource Basica1}">
+                    Saldo en cajas:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding CashBalances, StringFormat={}{0:c}}"/>
+                </TextBlock>
+
+                <TextBlock Grid.Row="4" Style="{StaticResource Basica1}">
+                    Clientes:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding Customers}"/>
+                </TextBlock>
+
+                <TextBlock Grid.Row="5" Style="{StaticResource Basica1}">
+                    Saldo de clientes:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding CustomerBalances, StringFormat={}{0:c}}"/>
+                </TextBlock>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CustomerDT">
+        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3" Margin="5" Background="{Binding Days, Converter={StaticResource IntToColoBackground}}">
+            <StackPanel HorizontalAlignment="Stretch" Margin="5">
+                <TextBlock Style="{StaticResource Nombre1}" Text="{Binding CustomerName}"/>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="2,0,2,0"/>
+
+                <TextBlock Style="{StaticResource Basica1}" Text="{Binding CutoffDate, StringFormat=Fecha de cobro: {0:dd-MM-yyyy}}"/>
+                <TextBlock Style="{StaticResource Basica1}" Text="{Binding Days, StringFormat=Mora: {0} dias}" Visibility="{Binding PoseeMora, Converter={StaticResource BoleanToVisivility}}"/>
+
+                <TextBlock Style="{StaticResource Basica1}">
+                    Saldo:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding Balance, StringFormat={}{0:c}}" FontWeight="Bold" FontSize="16"/>
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource Basica1}" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                    Ultimo abono:
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding LastPayment, StringFormat={}{0:c}}"/>
+                    <TextBlock Style="{StaticResource Basica1}" Text="{Binding PaymentPercentage, StringFormat={}({0:0.0%})}"/>
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource Basica1}" Text="{Binding Points, StringFormat=Puntos: {0:0.00}}" FontStyle="Italic" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CategoryDT">
+        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5" Background="{Binding IsSelected, Converter={StaticResource BooleanToColorBackground}}">
+            <StackPanel HorizontalAlignment="Stretch">
+                <TextBlock Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding Name}" />
+                <Border BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
+                <TextBlock Style="{StaticResource Basica1}" Margin="10,0,0,0" Text="{Binding CategoryClass, StringFormat=Rango: {0}}"/>
+                <TextBlock Style="{StaticResource Basica1}" Margin="10,0,0,0" Text="{Binding SubcategoriesIds.Count, StringFormat=Subcategorias: {0}}"/>
+                <TextBlock Style="{StaticResource Basica1}" Margin="10,0,0,0">Transacciones: 0</TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CashboxDT" >
+        <Border BorderBrush="Black" BorderThickness="1" Background="{Binding IsSelected, Converter={StaticResource BooleanToColorBackground}}">
+            <StackPanel>
+                <TextBlock Style="{StaticResource NombreCaja}" Text="{Binding BoxName}"/>
+                <TextBlock Style="{StaticResource DineroCaja}" Text="{Binding Balance, StringFormat={}{0:c}}"/>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+    <!--#endregion-->
+    
+</ResourceDictionary>

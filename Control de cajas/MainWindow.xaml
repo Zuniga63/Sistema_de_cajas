@@ -1,0 +1,1208 @@
+﻿<Window x:Class="Control_de_cajas.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Control_de_cajas"
+        mc:Ignorable="d"
+        Icon="Images/comprar.png"
+        Title="Sistema de control de cajas" Height="780" Width="1280" Background="#FF1AC5CD">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource CabeceraApp}">SISTEMA DE CONTROL DE CAJAS</TextBlock>
+        <Button DockPanel.Dock="Right" Style="{StaticResource ButtomBasico}" HorizontalAlignment="Right">Conectar</Button>
+        <TabControl Grid.Row="1" Background="#FF1AC5CD">
+            <TabItem DataContext="{Binding ViewUser}" IsSelected="{Binding IsSelected}">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource Basica2}">Usuarios y cajas</TextBlock>
+                </TabItem.Header>
+
+                <Grid>
+                    <!--VISTA PRINCIPAL DE LA PESTAÑA-->
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="5" IsEnabled="{Binding IsEnabled}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="12*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--SECCION DE USUARIOS -->
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Style="{StaticResource Titulo1}">Usuarios</TextBlock>
+
+                                <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" Margin="5"
+                                 ItemsSource="{Binding Users}" 
+                                 SelectedItem="{Binding UserSelected}"
+                                 ItemTemplate="{StaticResource UserDT}">
+
+                                </ListBox>
+
+                                <UniformGrid Grid.Row="2" Columns="2" Margin="10,10,10,0">
+                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="auto" Command="{Binding ActivateViewNewUser}">Nuevo</Button>
+                                    <Button Style="{StaticResource ButtomBasico}" Background="LightSalmon" Width="auto" Command="{Binding DeleteUserCmd}" IsEnabled="True">Eliminar</Button>
+                                </UniformGrid>
+                            </Grid>
+
+                            <!--AREA DE TRABAJO  DE LA VISTA DE USUARIOS-->
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--AREA DE TRABAJO DE LA COLUMNA DE LA IZQUIERDA-->
+                                <Grid Grid.Column="0">
+                                    <Border Grid.Row="0" Grid.RowSpan="2" Background="LightGray" BorderBrush="Gray" BorderThickness="2" CornerRadius="20"/>
+
+                                    <!--VISUALIZACION DE LAS CAJAS ACTUALES-->
+                                    <Grid Grid.Row="1" Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Style="{StaticResource Titulo2}">Cajas</TextBlock>
+                                        <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" Margin="5" ItemTemplate="{StaticResource CashboxDT}" ItemsSource="{Binding Boxs}" SelectedItem="{Binding BoxSelected}"/>
+                                        <DockPanel Grid.Row="2" HorizontalAlignment="Stretch" Margin="5">
+                                            <TextBlock DockPanel.Dock="Right" Style="{StaticResource Basica1}" Text="{Binding Boxs.Count, StringFormat=Cajas: {0}}"/>
+                                            <TextBlock Style="{StaticResource Error}" Text="{Binding ErrorOfBox}" Visibility="{Binding ErrorOfBox, Converter={StaticResource ErrorVisibility}}"/>
+                                        </DockPanel>
+
+                                        <Button Grid.Row="3" Margin="10,5,10,5" Width="Auto" Background="LightGreen" Style="{StaticResource ButtomBasico}" Command="{Binding ActivateViewNewBox}">Nueva caja</Button>
+                                    </Grid>
+                                </Grid>
+
+                                <!--AREA DE TRABAJO DE LA COLUMNA DE LA DERECHA-->
+                                <TabControl Grid.Column="1" Margin="10" Background="LightGray" Visibility="Visible">
+                                    <TabItem Header="Nueva Transaccion">
+                                        <Grid>
+                                            
+                                            <!--TNUEVA TRANSACCION-->
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5*"/>
+                                                    <ColumnDefinition Width="7*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--INFORMACION RELEVANTE DE LA TRANSACCION-->
+                                                <Grid >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Style="{StaticResource Titulo2}">Nueva transaccion</TextBlock>
+                                                    <Border Grid.Row="1" BorderThickness="1" Background="Black" BorderBrush="Black" Margin="10,0,10,0"/>
+
+                                                    <DockPanel Grid.Row="2" Margin="5,10,5,0">
+                                                        <TextBlock DockPanel.Dock="Left" Style="{StaticResource Basica2}">Fecha</TextBlock>
+                                                        <DatePicker Margin="2" SelectedDate="{Binding TransactionDate}" DisplayDateStart="{Binding StartTransactionDate}" DisplayDateEnd="{Binding EndTransactionDate}" Style="{StaticResource DatePickerBasico}"/>
+                                                    </DockPanel>
+                                                    <TextBlock Grid.Row="3" Margin="5,1,5,10" Style="{StaticResource Error}" Text="{Binding ErrorOfDate}" Visibility="{Binding ErrorOfDate, Converter={StaticResource ErrorVisibility}}"/>
+
+                                                    <TextBlock Grid.Row="4" Style="{StaticResource Basica2}" HorizontalAlignment="Center">Descripción</TextBlock>
+                                                    <TextBox Grid.Row="5" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding Description}" Height="80"/>
+                                                    <TextBlock Grid.Row="6" HorizontalAlignment="Right" Style="{StaticResource Error}" Text="{Binding ErrorOfDescription}" Visibility="{Binding ErrorOfDescription, Converter={StaticResource ErrorVisibility}}"/>
+
+                                                    <TextBlock Grid.Row="7" Style="{StaticResource Titulo2}">Importe</TextBlock>
+                                                    <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="5" HorizontalAlignment="Stretch">
+                                                        <TextBlock Style="{StaticResource Basica2}" HorizontalAlignment="Left">Tipo:</TextBlock>
+                                                        <StackPanel Margin="15,0,0,0" HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                                            <RadioButton VerticalContentAlignment="Center" IsChecked="{Binding DepositType}">
+                                                                <TextBlock Style="{StaticResource Basica2}">Ingreso</TextBlock>
+                                                            </RadioButton>
+                                                            <RadioButton VerticalContentAlignment="Center" Margin="15,0,0,0" IsChecked="{Binding EgressType}">
+                                                                <TextBlock Style="{StaticResource Basica2}">Egreso</TextBlock>
+                                                            </RadioButton>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    <TextBox Grid.Row="9" Style="{StaticResource CajaDeMoneda}" HorizontalContentAlignment="Center" Text="{Binding Amount, StringFormat={}{0:c}}"/>
+                                                    <TextBlock Grid.Row="10" Style="{StaticResource Error}" Text="{Binding ErrorOfAmount}" Visibility="{Binding ErrorOfAmount, Converter={StaticResource ErrorVisibility}}"/>
+
+                                                    <DockPanel Grid.Row="11">
+                                                        <TextBlock DockPanel.Dock="Left" Grid.Column="2" Style="{StaticResource Basica2}">Categoría</TextBlock>
+                                                        <ComboBox Margin="2,2,10,2" ItemsSource="{Binding Categories}" SelectedItem="{Binding CategorySelected}"/>
+                                                    </DockPanel>
+
+                                                    <TextBlock Grid.Row="12" Style="{StaticResource Error}" Text="{Binding ErrorOfCategory}" Visibility="{Binding ErrorOfCategory, Converter={StaticResource ErrorVisibility}}"/>
+
+                                                    <DockPanel Grid.Row="13">
+                                                        <Button DockPanel.Dock="Right" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveCategoryCmd}" Background="LightSalmon" Width="Auto">Retirar</Button>
+                                                        <TextBox Margin="10" HorizontalContentAlignment="Stretch" Text="{Binding CategoryRoute, Mode=OneWay}" TextWrapping="Wrap"/>
+                                                    </DockPanel>
+
+
+
+                                                    <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding AddNewTransactionCmd}" Background="LightGreen" Margin="5,0,5,0">Agregar transaccion</Button>
+
+                                                </Grid>
+
+                                                <Grid Grid.Column="1">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="2*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <DockPanel Margin="5">
+                                                        <TextBlock DockPanel.Dock="Top" Style="{StaticResource Titulo2}">Transacciones</TextBlock>
+                                                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                                                            <TextBlock Style="{StaticResource Basica1}" Text="{Binding Transactions.Count, StringFormat=Transacciones: {0}}"/>
+                                                            <TextBlock Style="{StaticResource Basica1}" Text="{Binding Transactions.Count, StringFormat=Ingresos: {0:c}}"/>
+                                                            <TextBlock Style="{StaticResource Basica1}" Text="{Binding Transactions.Count, StringFormat=Egresos: {0:c}}"/>
+                                                        </StackPanel>
+                                                        
+                                                        <DataGrid ItemsSource="{Binding Transactions}" Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}" SelectedItem="{Binding TransactionSelected}">
+                                                            <DataGrid.Columns>
+                                                                <!--DataGridTextColumn Header="ID" Width="Auto" Binding="{Binding ID}"/-->
+                                                                <DataGridTextColumn Header="Fecha" Width="Auto" Binding="{Binding TransactionDate, StringFormat={}{0:dd-MM-yyyy}}" IsReadOnly="True"/>
+                                                                <DataGridTextColumn Header="Descripcion" Width="2*" Binding="{Binding Description}" IsReadOnly="True"/>
+                                                                <DataGridTextColumn Header="Valor" Width="*" Binding="{Binding Amount,StringFormat={}{0:c}}" CellStyle="{StaticResource MoneyCellStyle}" IsReadOnly="True">
+
+                                                                </DataGridTextColumn>
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </DockPanel>
+
+                                                    <Button Grid.Row="1" Style="{StaticResource ButtomBasico}" Width="auto" Margin="10,5,10,5" Background="LightGreen" Command="{Binding ActivateModifyTransaction}">Modificar transaccion</Button>
+                                                </Grid>
+
+
+
+
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </TabItem>
+                                    <TabItem Header="Transferencias" DataContext="{Binding TransferView}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Style="{StaticResource Titulo2}">Transferecnia de efectivo</TextBlock>
+
+
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="5*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="0" Margin="10">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Style="{StaticResource Titulo2}">Hacer transferencia</TextBlock>
+                                                    <StackPanel Grid.Row="1">
+                                                        <DockPanel Grid.Row="1">
+                                                            <TextBlock Style="{StaticResource Basica2}" DockPanel.Dock="Left">Desde:</TextBlock>
+                                                            <ComboBox DockPanel.Dock="Right" IsEditable="True" Margin="5" ItemsSource="{Binding SenderBoxs}" SelectedItem="{Binding SenderBoxSelected}"></ComboBox>
+                                                        </DockPanel>
+                                                        <DockPanel Grid.Row="1">
+                                                            <TextBlock Style="{StaticResource Basica2}" DockPanel.Dock="Left">Hacia:</TextBlock>
+                                                            <ComboBox Margin="2" IsEditable="True" ItemsSource="{Binding AdressedBoxs}" SelectedItem="{Binding AdressedBoxSelected}"></ComboBox>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Row="2" Style="{StaticResource Titulo2}">Por valor de</TextBlock>
+                                                    <TextBox Grid.Row="3" Style="{StaticResource CajaDeMoneda}" HorizontalContentAlignment="Right" Text="{Binding AmountToTransfer, StringFormat={}{0:c}}"/>
+                                                    <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorInAmount}" Visibility="{Binding ErrorInAmount, Converter={StaticResource ErrorVisibility}}"/>
+                                                    <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Command="{Binding MakeTransferCmd}" Width="Auto" Background="LightGreen" Margin="10,0,10,0">Hacer transferencia</Button>
+                                                </Grid>
+
+                                                <Grid Grid.Column="1" Margin="10">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Style="{StaticResource Titulo2}">Flujo de efectivo</TextBlock>
+                                                    <DataGrid Grid.Row="1" Height="200" VerticalAlignment="Top" Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Header="Nombre de la caja" Width="3*"/>
+                                                            <DataGridTextColumn Header="Enviado" Width="*"/>
+                                                            <DataGridTextColumn Header="Recibido" Width="*"/>
+                                                            <DataGridTextColumn Header="Saldo" Width="*"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Consultas" DataContext="{Binding ConsultTransView}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Style="{StaticResource Titulo1}">Sistema de consulta</TextBlock>
+
+                                            <!--AREA DE SELECCION DE CATEGORÍAS-->
+                                            <Grid Grid.Row="1" Margin="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Style="{StaticResource Basica2}">Seleccionar categoría:</TextBlock>
+                                                <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Margin="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding CategorySelected}"/>
+                                                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="3" Text="{Binding CategoryRoute}"/>
+                                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveCategoryCmd}">Quitar</Button>
+                                            </Grid>
+
+                                            <!--AREA DE SELECION DE PERIODO Y DATOS GENERALES-->
+                                            <Grid Grid.Row="2" Margin="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--SELECCION DEL PERIODO A CONSULTAR-->
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Style="{StaticResource Titulo2}" >Seleccion del periodo</TextBlock>
+                                                    <RadioButton Grid.Row="1" VerticalContentAlignment="Center" IsChecked="{Binding AllTime}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Todo el tiempo</TextBlock>
+                                                    </RadioButton>
+                                                    <RadioButton Grid.Row="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" IsChecked="{Binding DefinedPeriod}">
+                                                        <Grid IsEnabled="{Binding DefinedPeriod}">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <TextBlock Style="{StaticResource Basica2}">Desde</TextBlock>
+                                                            <DatePicker Grid.Column="1" Margin="5" DisplayDateStart="{Binding SinceDateStart}" SelectedDate="{Binding SinceDateSelected}" DisplayDateEnd="{Binding SinceDateEnd}" Style="{StaticResource DatePickerBasico}"/>
+
+                                                            <TextBlock Grid.Row="1" Style="{StaticResource Basica2}">Hasta</TextBlock>
+                                                            <DatePicker Grid.Row="1" Grid.Column="1" Margin="5" DisplayDateStart="{Binding UntilDateStart}" DisplayDateEnd="{Binding UntilDateEnd}" SelectedDate="{Binding UntilDateSelected}" Style="{StaticResource DatePickerBasico}"/>
+                                                        </Grid>
+                                                    </RadioButton>
+
+                                                    <StackPanel Grid.Row="3" Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource Basica2}">Reporte:</TextBlock>
+                                                        <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding DailyReport}">
+                                                            <TextBlock Style="{StaticResource Basica2}">Diarios</TextBlock>
+                                                        </RadioButton>
+                                                        <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding BiweeklyReport}">
+                                                            <TextBlock Style="{StaticResource Basica2}">Quincenal</TextBlock>
+                                                        </RadioButton>
+                                                        <RadioButton VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding MensualReport}">
+                                                            <TextBlock Style="{StaticResource Basica2}">Mensual</TextBlock>
+                                                        </RadioButton>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <!--DATOS GLOBALES DEL PERIODO-->
+                                                <Grid Grid.Column="1" Margin="10">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.ColumnSpan="2" Style="{StaticResource Titulo2}">Informacion general</TextBlock>
+
+                                                    <TextBlock Grid.Row="1" Style="{StaticResource Basica2}">Ingresos</TextBlock>
+                                                    <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource CajaDeMoneda}" IsReadOnly="True" Margin="5" Text="{Binding Deposits,StringFormat={}{0:c}, Mode=OneWay}"/>
+
+                                                    <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Egresos</TextBlock>
+                                                    <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource CajaDeMoneda}" IsReadOnly="True" Margin="5" Text="{Binding Egress,StringFormat={}{0:c}, Mode=OneWay}" />
+
+                                                    <TextBlock Grid.Row="3" Style="{StaticResource Basica2}">Saldo</TextBlock>
+                                                    <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource CajaDeMoneda}" IsReadOnly="True" Margin="5" Text="{Binding Balance, StringFormat={}{0:c}, Mode=OneWay}"/>
+                                                </Grid>
+                                            </Grid>
+
+                                            <!--AREA DE MUESTREO DE DATOS-->
+                                            <Grid Grid.Row="3" Margin="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TabControl>
+                                                    <TabItem Header="Movimientos">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+
+                                                            <TextBlock Style="{StaticResource Titulo2}">Movimientos</TextBlock>
+                                                            <DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Transactions}" Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}">
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn Header="ID" Width="*" Binding="{Binding ID, Mode=OneWay}" IsReadOnly="True"/>
+                                                                    <DataGridTextColumn Header="Fecha" Width="*" Binding="{Binding TransactionDate, StringFormat={}{0:dd-MM-yyyy}, Mode=OneWay}" IsReadOnly="True"/>
+                                                                    <DataGridTextColumn Header="Descripciónn" Width="5*" Binding="{Binding Description, Mode=OneWay}" IsReadOnly="True"/>
+                                                                    <DataGridTextColumn Header="Valor" Width="*" Binding="{Binding Amount, StringFormat={}{0:c}, Mode=OneWay}" IsReadOnly="True" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                                </DataGrid.Columns>
+                                                            </DataGrid>
+                                                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5">Copiar las columnas:</TextBlock>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">ID</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Fecha</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Descripcion</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Ingresos</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Egresos</CheckBox>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </TabItem>
+                                                    <TabItem Header="Reportes" IsSelected="True">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+
+                                                            <TextBlock Style="{StaticResource Titulo2}">Reportes</TextBlock>
+                                                            <DataGrid Grid.Row="1" Margin="10" ItemsSource="{Binding Reports}" Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}">
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn Header="#" Width="Auto" Binding="{Binding Id, Mode=OneWay}" IsReadOnly="True"/>
+                                                                    <DataGridTextColumn Header="Fecha" Width="*" Binding="{Binding StartDate, StringFormat={}{0:dd-MM-yyyy}, Mode=OneWay}" IsReadOnly="True"/>
+                                                                    <DataGridTextColumn Header="Ingresos" Width="*" Binding="{Binding Revenue, StringFormat={}{0:c}, Mode=OneWay}" IsReadOnly="True" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                                    <DataGridTextColumn Header="Egresos" Width="*" Binding="{Binding Expenses, StringFormat={}{0:c}, Mode=OneWay}" IsReadOnly="True" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                                    <DataGridTextColumn Header="Saldo parcial" Width="*" Binding="{Binding PartialBalance, StringFormat={}{0:c}, Mode=OneWay}" IsReadOnly="True" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                                    <DataGridTextColumn Header="Saldo total" Width="*" Binding="{Binding TotalBalance, StringFormat={}{0:c}, Mode=OneWay}" IsReadOnly="True" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                                </DataGrid.Columns>
+                                                            </DataGrid>
+                                                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5">Copiar las columnas:</TextBlock>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">ID</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Ingresos</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Egresos</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Saldo parcial</CheckBox>
+                                                                <CheckBox Margin="5" VerticalAlignment="Center">Saldo total</CheckBox>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </TabItem>
+                                                </TabControl>
+
+                                                <Button Grid.Row="3" Style="{StaticResource ButtomBasico}" HorizontalAlignment="Center" Margin="5" Width="200" Background="LightGreen">Copy to Clipboard</Button>
+                                            </Grid>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!--VISTA CON LAS PESTAÑAS AUXILIARES-->
+                    <Grid Visibility="Visible">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="1" VerticalAlignment="Center" Background="#FF2574B6" CornerRadius="20" Height="200" Visibility="{Binding NewUserAuxiliarView,Converter={StaticResource BoleanToVisivility}}">
+                            <Grid Grid.Row="0" Margin="10" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Style="{StaticResource Titulo1}">Nuevo usuario</TextBlock>
+                                <TextBlock Grid.Row="1" Style="{StaticResource Basica2}">Nombre</TextBlock>
+                                <TextBox Grid.Row="2" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NameOfNewUser}"></TextBox>
+                                <TextBlock Grid.Row="3" Style="{StaticResource Error}" Margin="6,0,0,0" Text="{Binding ErrorOfNewUser}" Visibility="{Binding ErrorOfNewUser, Converter={StaticResource ErrorVisibility}}"/>
+
+                                <UniformGrid Grid.Row="4" Columns="2">
+                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="LightGreen" Command="{Binding CreateNewUserCmd}" >Crear</Button>
+                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                </UniformGrid>
+                                
+
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="3" VerticalAlignment="Center" Background="#FF2574B6" CornerRadius="20" Height="200" Visibility="{Binding NewCashboxAuxiliarView,Converter={StaticResource BoleanToVisivility}}">
+                            <Grid Grid.Row="0" Margin="10" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Style="{StaticResource Titulo1}">Nueva caja</TextBlock>
+                                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="2,0,2,0"/>
+                                <TextBlock Grid.Row="2" Style="{StaticResource Basica2}" Text="{Binding UserSelected.Name, StringFormat=Usuario: {0}}"/>
+                                <TextBlock Grid.Row="3" Style="{StaticResource Subtitulo1}">Nombre de la caja</TextBlock>
+                                <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewCashBoxName}"/>
+                                <TextBlock Grid.Row="5" Style="{StaticResource Error}" Margin="6,0,0,0" Text="{Binding ErrorOfCashboxName}" Visibility="{Binding ErrorOfCashboxName, Converter={StaticResource ErrorVisibility}}"/>
+                                
+
+                                <UniformGrid Grid.Row="6" Columns="2">
+                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Command="{Binding CreateNewCashboxCmd}" Width="Auto">Crear</Button>
+                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                </UniformGrid>
+
+
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="5" VerticalAlignment="Center" Background="Gray" Visibility="{Binding ModifyTransactionAuxiliar, Converter={StaticResource BoleanToVisivility}}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" DataContext="{Binding ModifyTransactionView}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.ColumnSpan="2" Style="{StaticResource Titulo2}">Modificacion de transaccion</TextBlock>
+                                    <Border Grid.Row="1" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black" Margin="5,0,5,10"/>
+
+                                    <DockPanel Grid.Row="2">
+                                        <TextBlock Style="{StaticResource Basica2}" Grid.Row="2" Margin="0,0,10,0">Fecha</TextBlock>
+                                        <DatePicker Style="{StaticResource DatePickerBasico}" SelectedDate="{Binding TransactionDate}" IsEnabled="{Binding UpdateDate}" DisplayDateEnd="{Binding DisplayDateEnd}"/>
+                                    </DockPanel>
+                                    <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding UpdateDate}"/>
+                                    <TextBlock Grid.Row="3" Style="{StaticResource Error}" Text="{Binding ErrorInTransactionDate}" Visibility="{Binding ErrorInTransactionDate, Converter={StaticResource ErrorVisibility}}"/>
+
+                                    <TextBlock Grid.Row="4" Style="{StaticResource Basica2}" HorizontalAlignment="Center">Descripción</TextBlock>
+                                    <TextBox Grid.Row="5" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding Description}" IsEnabled="{Binding UpdateDescription}"></TextBox>
+                                    <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding UpdateDescription}"/>
+                                    <TextBlock Grid.Row="6" Style="{StaticResource Error}" Text="{Binding ErrorInDescription}" Visibility="{Binding ErrorInDescription, Converter={StaticResource ErrorVisibility}}"/>
+
+                                    <TextBlock Grid.Row="7" Style="{StaticResource Basica2}" HorizontalAlignment="Center">Importe</TextBlock>
+                                    <TextBox Grid.Row="8" Style="{StaticResource CajaDeMoneda}" Text="{Binding Amount, StringFormat={}{0:c}}" IsEnabled="{Binding UpdateAmount}"></TextBox>
+                                    <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding UpdateAmount}"/>
+                                    <TextBlock Grid.Row="9" Style="{StaticResource Error}" Text="{Binding ErrorInAmount}" Visibility="{Binding ErrorInAmount, Converter={StaticResource ErrorVisibility}}"/>
+
+                                    <TextBlock Grid.Row="10" Style="{StaticResource Basica2}"  Visibility="{Binding ObservationsString, Converter={StaticResource ErrorVisibility}}">Observaciones</TextBlock>
+                                    <TextBox Grid.Row="11" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding ObservationsString, Mode=OneWay}" Visibility="{Binding ObservationsString, Converter={StaticResource ErrorVisibility}}"/>
+                                </Grid>
+
+                                <UniformGrid Grid.Row="1" Columns="2">
+                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="LightGreen" Command="{Binding ModifyTransactionsCmd}">Modificar</Button>
+                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                </UniformGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+                
+                
+
+            </TabItem>
+            
+            <TabItem DataContext="{Binding ViewClientes}" IsSelected="{Binding IsSelected}">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource Basica2}">Clientes</TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--SELECCION DEL CLIENTE-->
+                    <Border BorderBrush="DarkGoldenrod" BorderThickness="4" Background="Goldenrod" Margin="10" CornerRadius="15">
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Style="{StaticResource Titulo2}">Clientes</TextBlock>
+                            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
+                            
+                            <TextBlock Grid.Row="2" Style="{StaticResource Basica1}">Usuario</TextBlock>
+                            <ComboBox Grid.Row="3" Margin="5" ItemsSource="{Binding Users}" SelectedItem="{Binding UserSelected}"/>
+
+                            <TextBlock Grid.Row="4" Style="{StaticResource Titulo1}">Busqueda por</TextBlock>
+                            
+                            <TextBlock Grid.Row="5" Style="{StaticResource Basica1}">Nombre</TextBlock>
+                            
+                            <TextBox Grid.Row="6" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding SearchByName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                            <DockPanel Grid.Row="7"  HorizontalAlignment="Stretch">
+                                <RadioButton DockPanel.Dock="Left" IsChecked="{Binding AlfabeticalOrder}">Alfabetico A-Z</RadioButton>
+                                <RadioButton DockPanel.Dock="Right" IsChecked="{Binding EntryOrder}">Orden de ingreso</RadioButton>
+                                <RadioButton IsChecked="{Binding SortByPoint}" HorizontalAlignment="Center">Por puntos</RadioButton>
+                            </DockPanel>
+                            <CheckBox Grid.Row="8" VerticalContentAlignment="Center" Margin="0,0,5,0" IsChecked="{Binding SortByDaysOfDelay}">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource Basica1}"  VerticalAlignment="Center">Por días de mora:</TextBlock>
+                                    <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Width="50" HorizontalContentAlignment="Right" IsEnabled="{Binding SortByDaysOfDelay}" Text="{Binding DayOfDelay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </CheckBox>
+                            
+                            <TextBlock Grid.Row="9" Style="{StaticResource Basica1}" HorizontalAlignment="Center">Listado</TextBlock>
+                            <Border Grid.Row="10" Background="#1000" CornerRadius="20" Margin="10">
+                                <ListBox Grid.Row="8" HorizontalContentAlignment="Stretch" Margin="5"
+                                 ItemTemplate="{StaticResource CustomerDT}"
+                                 ItemsSource="{Binding Customers}"
+                                 SelectedItem="{Binding CustomerSelected}" Background="{x:Null}" BorderBrush="{x:Null}">
+
+                                </ListBox>
+                            </Border>
+
+                            <TextBlock Grid.Row="11" Style="{StaticResource Basica1}" HorizontalAlignment="Right" Margin="0,0,10,0" Text="{Binding Customers.Count, StringFormat=Clientes: {0}}"/>
+
+                            <Button Grid.Row="12" Style="{StaticResource ButtomBasico}" Background="LightSalmon" Command="{Binding DeleteCustomerCmd}" Width="auto" Margin="10,0,10,10">Eliminar</Button>
+                        </Grid>
+                    </Border>
+                    
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+                        <TabControl Grid.Row="0" Margin="10,0,10,0" Background="LightBlue">
+                            <TabItem >
+                                <TabItem.Header>
+                                    <TextBlock Style="{StaticResource Basica2}">Informacion</TextBlock>
+                                </TabItem.Header>
+                                
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Style="{StaticResource Titulo2}">Datos del cliente</TextBlock>
+                                    <Grid Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource Basica2}">Nombre:</TextBlock>
+                                            <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerName}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource Error}" Text="{Binding ErrorOfUpdateCustomerName}" Visibility="{Binding ErrorOfUpdateCustomerName, Converter={StaticResource ErrorVisibility}}">El nombre ya está en uso</TextBlock>
+
+                                            <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="{Binding CanModify}">Modificar</CheckBox>
+                                            <Button Grid.Row="2" Grid.Column="5" Style="{StaticResource ButtomBasico}" IsEnabled="False">Eliminar</Button>
+                                            <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource ButtomBasico}" Command="{Binding UpdateCustomerSelectedCmd}">Actualizar</Button>
+                                            
+                                            <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Nit:</TextBlock>
+                                            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerNit}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource Error}" Text="{Binding ErrorOfUpdateCustomerNit}" Visibility="{Binding ErrorOfUpdateCustomerNit, Converter={StaticResource ErrorVisibility}}"/>
+
+                                            <TextBlock Grid.Row="2" Grid.Column="3" Style="{StaticResource Basica2}">Telefono:</TextBlock>
+                                            <TextBox Grid.Row="2" Grid.Column="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerPhone}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
+                                            
+                                            <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource Basica2}">Direccion:</TextBlock>
+                                            <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerAddres}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
+                                        </Grid>
+                                        <Grid Grid.Row="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Titulo2}">Observaciones</TextBlock>
+                                            <TextBox Grid.Row="1" Grid.Column="0" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding CustomerObservation}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
+
+                                            <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" DataContext="{Binding CustomerSelected}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Grid.Row="0">
+                                                    <TextBlock Style="{StaticResource Titulo2}">Saldo</TextBlock>
+                                                    <Border BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
+                                                    <TextBlock Style="{StaticResource Titulo1}" Text="{Binding Balance, Mode=OneWay,StringFormat={}{0:c}}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="1">
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Fecha del ultimo pago:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding LastPaymentDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeSaldo, Converter={StaticResource BoleanToVisivility}}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Fecha del siguiente pago:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding CutoffDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Importe del ultimo abono:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding LastPayment, StringFormat={}{0:c}}"/>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding PaymentPercentage, StringFormat=({0:0.0%})}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeMora, Converter={StaticResource BoleanToVisivility}}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Dias de mora:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Days, StringFormat={}{0} días}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource Basica2}">Puntuacion:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Points}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                                                        <TextBlock Style="{StaticResource Basica2}">Abono promedio:</TextBlock>
+                                                        <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding AveragePayment, StringFormat={}{0:c}}"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </TabItem>
+                            <TabItem IsSelected="True">
+                                <TabItem.Header>
+                                    <TextBlock Style="{StaticResource Basica2}">Transacciones</TextBlock>
+                                </TabItem.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border BorderBrush="SteelBlue" BorderThickness="2" Background="LightSeaGreen" CornerRadius="10" Margin="10">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource Titulo2}">NUEVO COMPROMISO</TextBlock>
+                                                <TextBlock Style="{StaticResource Titulo2}" Text="{Binding CustomerSelected.CustomerName}" Visibility="{Binding CustomerSelected.CustomerName, Converter={StaticResource ErrorVisibility}}"/>
+                                                <Border BorderBrush="Black" BorderThickness="2" Margin="5,0,5,0"/>
+                                            </StackPanel>
+                                            <DockPanel Grid.Row="1" VerticalAlignment="Top">
+                                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource Basica2}">Fecha</TextBlock>
+                                                <DatePicker Margin="5" SelectedDate="{Binding DateOfNewDebt}" DisplayDateEnd="{Binding MaxDate}" Style="{StaticResource DatePickerBasico}"/>
+                                            </DockPanel>
+                                            <TextBlock Grid.Row="2" Style="{StaticResource Error}" Text="{Binding ErrorOfDateDebt}" Visibility="{Binding ErrorOfDateDebt, Converter={StaticResource ErrorVisibility}}"/>
+                                            <TextBlock Grid.Row="3" Style="{StaticResource Basica2}">Descripcion</TextBlock>
+                                            <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding DescriptionOfNewDebt, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Grid.Row="5" Style="{StaticResource Basica1}" HorizontalAlignment="Right" Text="{Binding LengtFree}"/>
+                                            <TextBlock Grid.Row="5" Style="{StaticResource Error}" Text="{Binding ErrorOfDescriptionDebt}" Visibility="{Binding ErrorOfDescriptionDebt, Converter={StaticResource ErrorVisibility}}"/>
+                                            <TextBlock Grid.Row="6" Style="{StaticResource Basica2}">Importe</TextBlock>
+                                            <TextBox Grid.Row="7" Style="{StaticResource CajaDeMoneda}" Text="{Binding AmountOfDebt, StringFormat={}{0:c}}"/>
+                                            <TextBlock Grid.Row="8" Style="{StaticResource Error}" Text="{Binding ErrorOfAmountDebt}" Visibility="{Binding ErrorOfAmountDebt, Converter={StaticResource ErrorVisibility}}"/>
+                                            <Button Grid.Row="9" Margin="10,0,10,5" Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding CreateDebtCmd}" Background="LightSalmon">Crear compromiso</Button>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Margin="5,2,5,2" BorderBrush="Black" BorderThickness="1"/>
+
+                                    <Border Grid.Column="2" BorderBrush="DarkBlue" BorderThickness="2" Background="LightSteelBlue" Margin="10" CornerRadius="10">
+                                        <Grid Grid.Column="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource Titulo2}">NUEVO ABONO</TextBlock>
+                                                <TextBlock Style="{StaticResource Titulo2}" Text="{Binding CustomerSelected.CustomerName}" Visibility="{Binding CustomerSelected.CustomerName, Converter={StaticResource ErrorVisibility}}"/>
+                                            </StackPanel>
+                                            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2" Margin="5,0,5,0"/>
+                                            <DockPanel Grid.Row="2">
+                                                <TextBlock DockPanel.Dock="Left" Style="{StaticResource Basica2}">Fecha</TextBlock>
+                                                <DatePicker Margin="5" SelectedDate="{Binding DateOfNewPayment}" DisplayDateEnd="{Binding MaxDate}" Style="{StaticResource DatePickerBasico}"/>
+                                            </DockPanel>
+                                            <TextBlock Grid.Row="3" Style="{StaticResource Error}" Text="{Binding ErrorOfDatePayment}" Visibility="{Binding ErrorOfDatePayment, Converter={StaticResource ErrorVisibility}}"/>
+
+                                            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <TextBlock Grid.Row="4" Style="{StaticResource Basica2}">Forma de pago:</TextBlock>
+                                                <RadioButton IsChecked="{Binding CashPayment}" VerticalContentAlignment="Center" FontSize="15">Efectivo</RadioButton>
+                                                <RadioButton IsChecked="{Binding CardPayment}" VerticalContentAlignment="Center" FontSize="15">Tarjeta</RadioButton>
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="5" Style="{StaticResource Basica2}" Text="{Binding CustomerSelected.Balance, StringFormat=Saldo del cliente: {0:c}}" FontWeight="Bold"/>
+                                            <TextBlock Grid.Row="6" Style="{StaticResource Error}" Text="{Binding ErrorInPayment}" Visibility="{Binding ErrorInPayment,Converter={StaticResource ErrorVisibility}}"/>
+                                            <TextBlock Grid.Row="7" Style="{StaticResource Basica2}">Importe</TextBlock>
+                                            <TextBox Grid.Row="8" Style="{StaticResource CajaDeMoneda}" Text="{Binding AmountPayment,StringFormat={}{0:c}}"/>
+                                            <TextBlock Grid.Row="9" Style="{StaticResource Error}" Text="{Binding ErrorInAmountPayment}" Visibility="{Binding ErrorInAmountPayment, Converter={StaticResource ErrorVisibility}}"/>
+                                            <Button Grid.Row="10" Style="{StaticResource ButtomBasico}" Command="{Binding CreatePaymentCmd}" Background="LightGreen" Width="Auto" Margin="10,0,10,0">Agregar</Button>
+                                        </Grid>
+                                    </Border>
+                                    
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+
+                        <TabControl Grid.Row="1" Margin="0,10,0,0">
+                            <TabItem Header="Transacciones">
+                                <DockPanel Grid.Row="1">
+                                    <TextBlock Style="{StaticResource Titulo2}" DockPanel.Dock="Top">Transacciones</TextBlock>
+                                    <DataGrid Margin="10" ItemsSource="{Binding CustomerTransactions}" SelectedItem="{Binding TransactionSelected}"
+                                          Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=OneWay}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, StringFormat={}{0:dd-MM-yy}, Mode=OneWay}" Width="*"/>
+                                            <DataGridTextColumn Header="Descripcion" Binding="{Binding Descriptcion, Mode=OneWay}" Width="3*"/>
+                                            <DataGridTextColumn Header="Deuda" Binding="{Binding Deuda, StringFormat={}{0:c}, Mode=OneWay}" Width="*" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                            <DataGridTextColumn Header="Abono" Binding="{Binding Abono, StringFormat={}{0:c}, Mode=OneWay}" Width="*" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                            <DataGridTextColumn Header="Saldo" Binding="{Binding Saldo, StringFormat={}{0:c}, Mode=OneWay}" Width="*" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </DockPanel>
+                            </TabItem>
+                            <TabItem Header="Seguimiento">
+                                <DockPanel Grid.Row="1">
+                                    <TextBlock Style="{StaticResource Titulo2}" DockPanel.Dock="Top">Estadisticas de seguimiento</TextBlock>
+                                    <DataGrid Margin="10" ItemsSource="{Binding CustomerTrackings}" 
+                                          Style="{StaticResource DataGridBasico}" ColumnHeaderStyle="{StaticResource HeaderStyle}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Fecha" Binding="{Binding TransactionDate, StringFormat={}{0:dd-MM-yy}, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Deuda" Binding="{Binding Debt, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                            <DataGridTextColumn Header="Abono" Binding="{Binding Payment, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                            <DataGridTextColumn Header="Saldo" Binding="{Binding Balance, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                            <DataGridTextColumn Header="Corte" Binding="{Binding CutOfDate, StringFormat={}{0:dd-MM-yy}, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Ant." Binding="{Binding AnticipateDays, Mode=OneWay}" Width="Auto"/>
+                                            <DataGridTextColumn Header="%" Binding="{Binding IncentivePercentage, StringFormat={}{0:0.0%}, Mode=OneWay}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Mora" Binding="{Binding ExpiredDays, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="%" Binding="{Binding PenaltyPercentage, StringFormat={}{0:0.0%}, Mode=OneWay}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Parcial" Binding="{Binding PartialPoints, StringFormat={}{0:0.00}, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Total" Binding="{Binding Points, StringFormat={}{0:0.00}, Mode=OneWay}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </DockPanel>
+                            </TabItem>
+                        </TabControl>
+                        
+
+                    </Grid>
+                    
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Background="Goldenrod" BorderBrush="DarkGoldenrod" BorderThickness="2" CornerRadius="15" Margin="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="75"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Style="{StaticResource Titulo2}">Nuevo cliente</TextBlock>
+                                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
+                                <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Nombre</TextBlock>
+                                <TextBox Grid.Row="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewCustomerName}"/>
+                                <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorNewCustomerName}" Visibility="{Binding ErrorNewCustomerName, Converter={StaticResource ErrorVisibility}}"/>
+                                <TextBlock Grid.Row="5" Style="{StaticResource Basica2}">Nit</TextBlock>
+                                <TextBox Grid.Row="6" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewCustomerNit}"/>
+                                <TextBlock Grid.Row="7" Style="{StaticResource Error}" Text="{Binding ErrorNewCustomerNit}" Visibility="{Binding ErrorNewCustomerNit, Converter={StaticResource ErrorVisibility}}"/>
+                                <TextBlock Grid.Row="8" Style="{StaticResource Basica2}">Direccion</TextBlock>
+                                <TextBox Grid.Row="9" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewCustomerAddress}"/>
+                                <TextBlock Grid.Row="10" Style="{StaticResource Basica2}">Telefono</TextBlock>
+                                <TextBox Grid.Row="11" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewCustomerPhone}"/>
+                                <TextBlock Grid.Row="12" Style="{StaticResource Basica2}">Observacion</TextBlock>
+                                <TextBox Grid.Row="13" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding NewCustomerObservation}"/>
+                                <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Command="{Binding CreateNewCustomerCmd}" Width="Auto" Margin="10,0,10,10" Background="LightGreen">Crear</Button>
+                            </Grid>
+                        </Border>
+
+                        <TabControl Grid.Row="1">
+                            <TabItem Header="Modificacion">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Style="{StaticResource Titulo2}">Modificar transaccion</TextBlock>
+                                    <TextBlock Grid.Row="1" Style="{StaticResource Basica2}">Fecha</TextBlock>
+                                    <DatePicker Grid.Row="2" Margin="5" SelectedDate="{Binding TransactionDate}" Style="{StaticResource DatePickerBasico}"></DatePicker>
+                                    <TextBlock Grid.Row="3" Style="{StaticResource Basica2}">Descripcion</TextBlock>
+                                    <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding TransactionDescription}"/>
+                                    <TextBlock Grid.Row="5" Style="{StaticResource Basica2}" Text="{Binding TransactionType}"></TextBlock>
+                                    <TextBox Grid.Row="6" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding TransactionAmount, StringFormat={}{0:c}}" IsReadOnly="True"></TextBox>
+                                    <Button Grid.Row="7" Style="{StaticResource ButtomBasico}" Command="{Binding ModificarTransaccionCmd}">Modificar</Button>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Modificados">
+                                <DockPanel Margin="10">
+                                    <DatePicker DockPanel.Dock="Top" SelectedDate="{Binding DateCustomerUpdateConsult}" Style="{StaticResource DatePickerBasico}"></DatePicker>
+                                    <ListBox Margin="0,10,0,0" ItemsSource="{Binding CustomersUpdates}"/>
+                                </DockPanel>
+                            </TabItem>
+                        </TabControl>
+
+                        
+                        
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem DataContext="{Binding ViewCategorias}" IsSelected="{Binding IsSelected}">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource Basica2}">Categorias</TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderThickness="2" Margin="10" Background="#90AFC5" BorderBrush="#2A3132" CornerRadius="20">
+                        <Grid Margin="5">
+                            <Grid IsEnabled="{Binding IsEnabled}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Style="{StaticResource Titulo1}">Categorías principales</TextBlock>
+                                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
+
+                                <DockPanel Grid.Row="2" Margin="0,10,0,10">
+                                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource Basica1}">Seleccionar usuario</TextBlock>
+                                    <ComboBox Margin="10,0,10,0" ItemsSource="{Binding Users}" SelectedItem="{Binding UserSelected}"/>
+                                </DockPanel>
+
+                                <TextBlock Grid.Row="3" Style="{StaticResource Basica1}">Buscar por nombre</TextBlock>
+                                <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding MainCategoryName, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                                <TextBlock Grid.Row="5" Style="{StaticResource Basica1}" HorizontalAlignment="Center">Listado</TextBlock>
+                                <ListBox Grid.Row="6" Margin="2" HorizontalContentAlignment="Stretch" ItemsSource="{Binding MainCategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding MainCategorySelected}"/>
+                                <TextBlock Grid.Row="7" HorizontalAlignment="Right" Style="{StaticResource Basica1}" FontSize="10">Total:124</TextBlock>
+
+                                <UniformGrid Grid.Row="8" HorizontalAlignment="Stretch" Rows="1">
+                                    <Button Margin="5,2,10,0" Width="Auto" Style="{StaticResource ButtomBasico}" Background="LightGreen" Command="{Binding NewMainCategoryCmd}">Nueva</Button>
+                                    <Button Margin="5,2,10,0" Width="Auto" Style="{StaticResource ButtomBasico}" Background="Tomato" IsEnabled="False">Eliminar</Button>
+                                </UniformGrid>
+
+                            </Grid>
+
+                            <!--VENTANA AUXILIAR PARA CREAR NUEVAS CATEGORIAS-->
+                            <Border Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                            BorderBrush="DarkGray" BorderThickness="2" Margin="20,0,20,0" Background="LightGray" CornerRadius="10" Visibility="{Binding CreatingMainCategory, Converter={StaticResource BoleanToVisivility}}">
+                                <Grid Margin="5,25,5,25">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Style="{StaticResource Titulo2}">Nueva categoría principal</TextBlock>
+                                    <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,20"></Border>
+                                    <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Nombre</TextBlock>
+                                    <TextBox Grid.Row="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewMainCategoryName, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorInNewMainCategoryName}" Visibility="{Binding ErrorOfNewCategory, Converter={StaticResource ErrorVisibility}}"/>
+                                    <UniformGrid Grid.Row="5" Rows="1">
+                                        <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="LightGreen" Command="{Binding CreateMainCategoryCmd}">Crear categoría</Button>
+                                        <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="Tomato" Command="{Binding CancelOperationCmd}">Salir</Button>
+                                    </UniformGrid>
+                                    
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Margin="10" BorderThickness="2"  Background="#90AFC5" BorderBrush="#2A3132" CornerRadius="20,20,0,0" IsEnabled="{Binding IsEnabled}">
+                            <StackPanel Margin="10,10,10,20">
+                                <TextBlock Style="{StaticResource Titulo1}">Ruta de categorías</TextBlock>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Style="{StaticResource Basica2}" VerticalAlignment="Center">Ruta de categorías actual:</TextBlock>
+
+                                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="5" Background="White">
+                                        <TextBlock Style="{StaticResource  Basica1}" Text="{Binding CategoryRoute}"/>
+                                    </Border>
+                                    <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveToRouteCmd}">Regresar</Button>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Grid Grid.Row="2">
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border BorderThickness="2"  Background="#90AFC5" BorderBrush="#2A3132" CornerRadius="20" Margin="10,0,10,10">
+                                <Grid Margin="10" IsEnabled="{Binding IsEnabled}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Style="{StaticResource Titulo1}">Listado de subcategorías</TextBlock>
+                                    <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding MainCategorySelected.Name,StringFormat={}{({0})}}"/>
+                                    <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,10"/>
+
+                                    <DockPanel Grid.Row="3" Margin="0,0,0,10">
+                                        <TextBlock Style="{StaticResource Basica2}">Buscar por nombre</TextBlock>
+                                        <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding SubcategoryName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    </DockPanel>
+
+                                    <ListBox Grid.Row="4" ItemsSource="{Binding Subcategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding SubcategorySelected}" HorizontalContentAlignment="Stretch"></ListBox>
+
+                                    <UniformGrid Grid.Row="5" Rows="1" Margin="10">
+                                        <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding AddToRouteCmd}">Cargar a la ruta</Button>
+                                        <Button Style="{StaticResource ButtomBasico}" Width="Auto" IsEnabled="False">Eliminar relacion</Button>
+                                    </UniformGrid>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="1" BorderThickness="2"  Background="#90AFC5" BorderBrush="#2A3132" CornerRadius="20" Margin="10,0,10,10">
+                                <Grid Margin="10">
+                                    <Grid IsEnabled="{Binding IsEnabled}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Style="{StaticResource Titulo1}">Categorías disponibless</TextBlock>
+                                        <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase actual: {0}}"/>
+                                        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,10"/>
+
+                                        <DockPanel Grid.Row="3" Margin="0,0,0,10">
+                                            <TextBlock Style="{StaticResource Basica2}">Buscar por nombre</TextBlock>
+                                            <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding AvailableCategoryName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                        </DockPanel>
+
+                                        <ListBox Grid.Row="4" ItemsSource="{Binding AvailableCategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding AvailableCategorySelected}" HorizontalContentAlignment="Stretch"></ListBox>
+
+                                        <UniformGrid Grid.Row="5" Rows="1" Margin="10">
+                                            <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding MatchCategoryCmd}">Relacionar a ruta</Button>
+                                            <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding NewSubcatetoryCmd}">Nueva categoría</Button>
+                                        </UniformGrid>
+                                    </Grid>
+
+                                    <Border Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Visibility="{Binding CreatingSubcategory, Converter={StaticResource BoleanToVisivility}}"
+                                        BorderBrush="DarkGray" BorderThickness="2" Margin="20,0,20,0" Background="LightGray" CornerRadius="10">
+                                        <Grid Margin="5,25,5,25">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Style="{StaticResource Titulo2}">Nueva subcategoría</TextBlock>
+                                            <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase #:{0}}"/>
+                                            <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,20"></Border>
+                                            <TextBlock Grid.Row="3" Style="{StaticResource Basica2}">Nombre</TextBlock>
+                                            <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewSubcategoryName, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Grid.Row="5" Style="{StaticResource Error}" Text="{Binding ErrorInNewSubcategoryName}" Visibility="{Binding ErrorOfNewCategory, Converter={StaticResource ErrorVisibility}}"/>
+                                            <UniformGrid Grid.Row="6" Rows="1">
+                                                <Button Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="LightGreen" Command="{Binding CreateSubcategoryCmd}">Crear categoría</Button>
+                                                <Button Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="Tomato" Command="{Binding CancelOperationCmd}">Salir</Button>
+                                            </UniformGrid>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        
+                    </Grid>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <TextBlock Grid.Row="2" Style="{StaticResource Basica1}" HorizontalAlignment="Right">Version: 0.1.1</TextBlock>
+    </Grid>
+</Window>
