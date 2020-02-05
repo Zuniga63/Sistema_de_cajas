@@ -14,6 +14,8 @@ namespace Control_de_cajas.ViewModels
         //Listado de clientes sin excluir y segun el usuario seleccionado
         private List<Customer> allCustomer;
 
+        private enum AuxiliarView { NewClient, NewDebt, NewPayment}              //Para identificar las vista auxiliares 
+
         private bool _isSelected;
         /// <summary>
         /// Esta propiedad va a recargar los usuarios cada vez que se visite esta vista
@@ -30,6 +32,37 @@ namespace Control_de_cajas.ViewModels
                     ReloadUsers();
                 }
             }
+        }
+
+        private bool _isEnabled;
+        /// <summary>
+        /// Esta propiedad habilita o deshabilita la seccion principal
+        /// </summary>
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            private set { _isEnabled = value; OnPropertyChanged("IsEnabled"); }
+        }
+
+        private bool _newCustomerAux;
+        public bool NewCustomerAux
+        {
+            get { return _newCustomerAux; }
+            set { _newCustomerAux = value; OnPropertyChanged("NewCustomerAux"); }
+        }
+
+        private bool _newDebtAux;
+        public bool NewDebtAux
+        {
+            get { return _newDebtAux; }
+            set { _newDebtAux = value; OnPropertyChanged("NewDebtAux"); }
+        }
+
+        private bool _newPaymentAux;
+        public bool NewpaymentAux
+        {
+            get { return _newPaymentAux; }
+            set { _newPaymentAux = value; OnPropertyChanged("NewpaymentAux"); }
         }
 
         private DateTime? _maxDate;
@@ -585,6 +618,12 @@ namespace Control_de_cajas.ViewModels
 
         #endregion
 
+
+        public Command CancelOperation { get; private set; }
+        public Command ActivateNewCustomerView { get; private set; }
+        public Command ActivateNewDebtView { get; private set; }
+        public Command ActivateNewPaymentView { get; private set; }
+
         /// <summary>
         /// Este metodo es utilizado al crear la view para inicializar las listada de la clase
         /// </summary>
@@ -608,6 +647,10 @@ namespace Control_de_cajas.ViewModels
             UpdateCustomerSelectedCmd = new Command(UpdateCustomerSelected, () => _canModify);
             DeleteCustomerCmd = new Command(DeleteCustomer, () => _customerSelected != null);
             ModificarTransaccionCmd = new Command(ModificarTransaccion, () => TransactionSelected != null);
+            CancelOperation = new Command(ActivatState, () => !IsEnabled);
+            ActivateNewCustomerView = new Command(() => WaitingState(AuxiliarView.NewClient), () => UserSelected != null);
+            ActivateNewDebtView = new Command(() => WaitingState(AuxiliarView.NewDebt), () => CustomerSelected != null);
+            ActivateNewPaymentView = new Command(() => WaitingState(AuxiliarView.NewPayment), () => CustomerSelected != null);
         }
 
         public ViewClientes()
@@ -617,6 +660,7 @@ namespace Control_de_cajas.ViewModels
             MaxDate = DateTime.Now;
             PaymentTracking.DefineParameters(100, 10, -10);
             DateCustomerUpdateConsult = DateTime.Now;
+            IsEnabled = true;
         }
 
         /// <summary>
@@ -719,6 +763,7 @@ namespace Control_de_cajas.ViewModels
                 if (BDComun.AddCustomer(UserSelected.ID, _newCustomerName, _newCustomerObservation,
                     _newCustomerNit, _newCustomerAddress, _newCustomerPhone)) 
                 {
+                    ActivatState();
                     MostrarMensaje("Cliente creado satisfactoriamente");            //Se muestra el mensaje al usuario de que ha ido todo correctamente
                     ReloadCustomers();                                              //Se recargan los clientes de la base de datos
 
@@ -883,6 +928,7 @@ namespace Control_de_cajas.ViewModels
                         BDComun.UpdateCustmerState(CustomerSelected);
                         ConsultTransactions();
                         DateCustomerUpdateConsult = DateTime.Now;
+                        ActivatState();
                     }
                     else
                     {
@@ -1032,6 +1078,7 @@ namespace Control_de_cajas.ViewModels
                         BDComun.UpdateCustmerState(CustomerSelected);
                         ConsultTransactions();
                         DateCustomerUpdateConsult = DateTime.Now;
+                        ActivatState();
                     }
                     else
                     {
@@ -1183,6 +1230,32 @@ namespace Control_de_cajas.ViewModels
                 }
                 
             }
+        }
+
+        private void WaitingState(AuxiliarView aux)
+        {
+            IsEnabled = false;
+
+            switch (aux)
+            {
+                case AuxiliarView.NewClient:
+                     NewCustomerAux = true;
+                    break;
+                case AuxiliarView.NewDebt:
+                    NewDebtAux = true;
+                    break;
+                case AuxiliarView.NewPayment:
+                    NewpaymentAux = true;
+                    break;
+            }
+        }
+
+        private void ActivatState()
+        {
+            NewCustomerAux = false;
+            NewDebtAux = false;
+            NewpaymentAux = false;
+            IsEnabled = true;
         }
     }
 }
