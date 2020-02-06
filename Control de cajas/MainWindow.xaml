@@ -51,10 +51,10 @@
 
                                 <UniformGrid Grid.Row="2" Columns="2" Margin="10,10,10,0">
                                     <Button Style="{StaticResource ButtomBasico}" Background="LightSalmon" Width="auto" Command="{Binding DeleteUserCmd}" IsEnabled="True">Eliminar</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="auto" Command="{Binding ActivateViewNewUser}">Nuevo</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Width="auto" Command="{Binding ActivateViewNewUser}">Nuevo</Button>
                                     
                                 </UniformGrid>
-                                <Button Grid.Row="3" Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="Auto" Margin="10" Command="{Binding ActivateCategoryGestion}">Gestionar categorías</Button>
+                                <Button Grid.Row="3" Style="{StaticResource GreenButtom}" Margin="10" Command="{Binding ActivateCategoryGestion}">Gestionar categorías</Button>
                             </Grid>
 
                             <!--AREA DE TRABAJO  DE LA VISTA DE USUARIOS-->
@@ -65,7 +65,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!--AREA DE TRABAJO DE LA COLUMNA DE LA IZQUIERDA-->
-                                <Grid Grid.Column="0">
+                                <Grid Grid.Column="0" Margin="5,10,5,10">
                                     <Border Grid.Row="0" Grid.RowSpan="2" Background="LightGray" BorderBrush="Gray" BorderThickness="2" CornerRadius="20"/>
 
                                     <!--VISUALIZACION DE LAS CAJAS ACTUALES-->
@@ -84,7 +84,7 @@
                                             <TextBlock Style="{StaticResource Error}" Text="{Binding ErrorOfBox}" Visibility="{Binding ErrorOfBox, Converter={StaticResource ErrorVisibility}}"/>
                                         </DockPanel>
 
-                                        <Button Grid.Row="3" Margin="10,5,10,5" Width="Auto" Background="LightGreen" Style="{StaticResource ButtomBasico}" Command="{Binding ActivateViewNewBox}">Nueva caja</Button>
+                                        <Button Grid.Row="3" Margin="10,5,10,5" Style="{StaticResource GreenButtom}" Command="{Binding ActivateViewNewBox}">Nueva caja</Button>
                                     </Grid>
                                 </Grid>
 
@@ -163,7 +163,7 @@
 
 
 
-                                                    <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding AddNewTransactionCmd}" Background="LightGreen" Margin="5,0,5,0">Agregar transaccion</Button>
+                                                    <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding AddNewTransactionCmd}" Margin="5,0,5,0">Agregar transaccion</Button>
 
                                                 </Grid>
 
@@ -194,7 +194,7 @@
                                                         </DataGrid>
                                                     </DockPanel>
 
-                                                    <Button Grid.Row="1" Style="{StaticResource ButtomBasico}" Width="auto" Margin="10,5,10,5" Background="LightGreen" Command="{Binding ActivateModifyTransaction}">Modificar transaccion</Button>
+                                                    <Button Grid.Row="1" Style="{StaticResource GreenButtom}" Margin="10,5,10,5" Command="{Binding ActivateModifyTransaction}">Modificar transaccion</Button>
                                                 </Grid>
 
 
@@ -455,7 +455,7 @@
                     </Border>
 
                     <!--VISTA CON LAS PESTAÑAS AUXILIARES-->
-                    <Grid Visibility="Visible" d:IsHidden="True">
+                    <Grid Visibility="Visible">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="4*"/>
@@ -483,7 +483,7 @@
 
                                 <UniformGrid Grid.Row="4" Columns="2">
                                     <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="LightGreen" Command="{Binding CreateNewUserCmd}" >Crear</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateNewUserCmd}" >Crear</Button>
                                     
                                 </UniformGrid>
 
@@ -514,7 +514,7 @@
                                 <UniformGrid Grid.Row="6" Columns="2">
 
                                     <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Command="{Binding CreateNewCashboxCmd}" Width="Auto">Crear</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateNewCashboxCmd}">Crear</Button>
                                     
                                 </UniformGrid>
 
@@ -577,7 +577,7 @@
                                 <UniformGrid Grid.Row="1" Columns="2">
 
                                     <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="LightGreen" Command="{Binding ModifyTransactionsCmd}">Modificar</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding ModifyTransactionsCmd}">Modificar</Button>
                                     
                                 </UniformGrid>
                             </Grid>
@@ -585,7 +585,7 @@
                     </Grid>
                     
                     <!--VISTA CON LAS CATEGORÍAS-->
-                    <Grid Background="#AFFF" Visibility="{Binding CategoryGestionView, Converter={StaticResource BoleanToVisivility}}" d:IsHidden="True">
+                    <Grid Background="#AFFF" Visibility="{Binding CategoryGestionView, Converter={StaticResource BoleanToVisivility}}">
                         <Grid Margin="20,0,10,0" Grid.Row="1" DataContext="{Binding ViewCategorias}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -625,7 +625,7 @@
 
                                         <UniformGrid Grid.Row="8" HorizontalAlignment="Stretch" Rows="1">
                                             <Button Margin="5,2,10,0" Width="Auto" Style="{StaticResource ButtomBasico}" Background="Tomato" IsEnabled="False">Eliminar</Button>
-                                            <Button Margin="5,2,10,0" Width="Auto" Style="{StaticResource ButtomBasico}" Background="LightGreen" Command="{Binding NewMainCategoryCmd}">Nueva</Button>
+                                            <Button Margin="5,2,10,0" Style="{StaticResource GreenButtom}" Command="{Binding NewMainCategoryCmd}">Nueva</Button>
                                             
                                         </UniformGrid>
 
@@ -651,7 +651,7 @@
                                             <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorInNewMainCategoryName}" Visibility="{Binding ErrorOfNewCategory, Converter={StaticResource ErrorVisibility}}"/>
                                             <UniformGrid Grid.Row="5" Rows="1">
                                                 <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="Tomato" Command="{Binding CancelOperationCmd}">Salir</Button>
-                                                <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="LightGreen" Command="{Binding CreateMainCategoryCmd}">Crear categoría</Button>                                               
+                                                <Button Grid.Row="5" Style="{StaticResource GreenButtom}" Margin="10,0,10,0" Command="{Binding CreateMainCategoryCmd}">Crear categoría</Button>                                               
                                             </UniformGrid>
 
                                         </Grid>
@@ -868,7 +868,7 @@
 
                                 <UniformGrid Grid.Row="12" Columns="2">
                                     <Button Style="{StaticResource ButtomBasico}" Background="LightSalmon" Command="{Binding DeleteCustomerCmd}" Width="auto" Margin="10,0,10,10">Eliminar</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="auto" Margin="10,0,10,10" Command="{Binding ActivateNewCustomerView}">Nuevo</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewCustomerView}">Nuevo</Button>
                                 </UniformGrid>
 
                             </Grid>
@@ -926,7 +926,7 @@
 
                                                     <CheckBox Grid.Row="0" Grid.Column="5" IsChecked="{Binding CanModify}">Modificar</CheckBox>
                                                     <Button Grid.Row="2" Grid.Column="5" Style="{StaticResource ButtomBasico}" IsEnabled="False">Eliminar</Button>
-                                                    <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource ButtomBasico}" Command="{Binding UpdateCustomerSelectedCmd}">Actualizar</Button>
+                                                    <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource GreenButtom}" Command="{Binding UpdateCustomerSelectedCmd}">Actualizar</Button>
 
                                                     <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Nit:</TextBlock>
                                                     <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerNit}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
@@ -1003,8 +1003,8 @@
                                                 </Grid>
 
                                                 <UniformGrid Grid.Row="2" Columns="2" Margin="10">
-                                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="auto" Margin="10,0,10,10" Command="{Binding ActivateNewDebtView}">NUEVA DEUDA</Button>
-                                                    <Button Style="{StaticResource ButtomBasico}" Background="LightGreen" Width="auto" Margin="10,0,10,10" Command="{Binding ActivateNewPaymentView}">HACER ABONO</Button>
+                                                    <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewDebtView}">NUEVA DEUDA</Button>
+                                                    <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewPaymentView}">HACER ABONO</Button>
                                                 </UniformGrid>
                                             </Grid>
                                         </Grid>
@@ -1111,7 +1111,7 @@
                                         <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding TransactionDescription}"/>
                                         <TextBlock Grid.Row="5" Style="{StaticResource Basica2}" Text="{Binding TransactionType}"></TextBlock>
                                         <TextBox Grid.Row="6" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding TransactionAmount, StringFormat={}{0:c}}" IsReadOnly="True"></TextBox>
-                                        <Button Grid.Row="7" Style="{StaticResource ButtomBasico}" Command="{Binding ModificarTransaccionCmd}">Modificar</Button>
+                                        <Button Grid.Row="7" Style="{StaticResource GreenButtom}" Command="{Binding ModificarTransaccionCmd}">Modificar</Button>
                                     </Grid>
                                 </Grid>
                             </Border>
@@ -1169,7 +1169,7 @@
                                 <TextBlock Grid.Row="12" Style="{StaticResource Basica2}">Observacion</TextBlock>
                                 <TextBox Grid.Row="13" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding NewCustomerObservation}"/>
                                 <UniformGrid Grid.Row="14" Columns="2">
-                                    <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Command="{Binding CreateNewCustomerCmd}" Width="Auto" Margin="10,0,10,10" Background="LightGreen">Crear</Button>
+                                    <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding CreateNewCustomerCmd}" Margin="10,0,10,10" >Crear</Button>
                                     <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Command="{Binding CancelOperation}" Width="Auto" Margin="10,0,10,10" Background="LightSalmon">Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
@@ -1208,7 +1208,7 @@
                                 <TextBox Grid.Row="7" Style="{StaticResource CajaDeMoneda}" Text="{Binding AmountOfDebt, StringFormat={}{0:c}}"/>
                                 <TextBlock Grid.Row="8" Style="{StaticResource Error}" Text="{Binding ErrorOfAmountDebt}" Visibility="{Binding ErrorOfAmountDebt, Converter={StaticResource ErrorVisibility}}"/>
                                 <UniformGrid Grid.Row="9" Columns="2" Margin="10">
-                                    <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding CreateDebtCmd}" Background="LightGreen">Crear</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateDebtCmd}" >Crear</Button>
                                     <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding CancelOperation}" Background="LightSalmon">Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
@@ -1252,7 +1252,7 @@
                                 <TextBox Grid.Row="8" Style="{StaticResource CajaDeMoneda}" Text="{Binding AmountPayment,StringFormat={}{0:c}}"/>
                                 <TextBlock Grid.Row="9" Style="{StaticResource Error}" Text="{Binding ErrorInAmountPayment}" Visibility="{Binding ErrorInAmountPayment, Converter={StaticResource ErrorVisibility}}"/>
                                 <UniformGrid Grid.Row="10" Margin="5,10,5,10" Columns="2">
-                                    <Button Style="{StaticResource ButtomBasico}" Command="{Binding CreatePaymentCmd}" Background="LightGreen" Width="Auto">Crear</Button>
+                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding CreatePaymentCmd}" >Crear</Button>
                                     <Button Style="{StaticResource ButtomBasico}" Command="{Binding CancelOperation}" Width="Auto" Background="LightSalmon">Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
