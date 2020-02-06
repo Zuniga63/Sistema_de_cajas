@@ -11,7 +11,7 @@ namespace Control_de_cajas.ViewModels
 {
     class ViewUsers:ViewModelBase
     {
-        private enum AuxiliarView { NewUser, NewBox, NewTramsaction, ModifyTransaction}              //Para identificar las vista auxiliares 
+        private enum AuxiliarView { NewUser, NewBox, NewTramsaction, ModifyTransaction, CategoryGestion}              //Para identificar las vista auxiliares 
         private List<Category> allCategories;
         private DateTime currentDate;
         private List<CashboxTransaction> allTransactions;
@@ -79,6 +79,17 @@ namespace Control_de_cajas.ViewModels
             {
                 _modifyTransactionAuxiliar = value;
                 OnPropertyChanged("ModifyTransactionAuxiliar");
+            }
+        }
+
+        private bool _categoryGestionView;
+        public bool CategoryGestionView
+        {
+            get { return _categoryGestionView; }
+            set
+            {
+                _categoryGestionView = value;
+                OnPropertyChanged("CategoryGestionView");
             }
         }
 
@@ -306,18 +317,21 @@ namespace Control_de_cajas.ViewModels
         public Command ActivateViewNewUser { get; private set; }
         public Command ActivateViewNewBox { get; private set; }
         public Command ActivateModifyTransaction { get; set; }
+        public Command ActivateCategoryGestion { get; set; }
         public Command CancelOperation { get; private set; }
         public Command ModifyTransactionsCmd { get; private set; }
 
         public ViewTransferencia TransferView { get; set; }
         public ConsultTransactionView ConsultTransView { get; set; }
         public ViewModifyTransaction ModifyTransactionView { get; set; }
+        public ViewCategorias ViewCategorias { get; set; }
 
         public ViewUsers()
         {
             TransferView = new ViewTransferencia();
             ConsultTransView = new ConsultTransactionView();
             ModifyTransactionView = new ViewModifyTransaction();
+            ViewCategorias = new ViewCategorias();
             InicializarListas();
             InicializarComandos();
             ReloadUsers();
@@ -346,6 +360,7 @@ namespace Control_de_cajas.ViewModels
             ActivateViewNewUser = new Command(()=> WaitingState(AuxiliarView.NewUser), () => true);
             ActivateViewNewBox = new Command(() => WaitingState(AuxiliarView.NewBox), () => UserSelected != null);
             ActivateModifyTransaction = new Command(() => WaitingState(AuxiliarView.ModifyTransaction), ValidateActiveModifyTransactios);
+            ActivateCategoryGestion = new Command(() => WaitingState(AuxiliarView.CategoryGestion), ()=> true);
             CancelOperation = new Command(ActivatState, () => !IsEnabled);
             ModifyTransactionsCmd = new Command(ModifyTransaction, () => true);
         }
@@ -784,6 +799,23 @@ namespace Control_de_cajas.ViewModels
                         ModifyTransactionView.DefinedParameter(allTransactions, TransactionSelected);
                     }
                     break;
+                case AuxiliarView.CategoryGestion:
+                    {
+                        CategoryGestionView = true;
+                        ViewCategorias.IsSelected = true;
+                        if(UserSelected != null)
+                        {
+                            foreach(User u in ViewCategorias.Users)
+                            {
+                                if(UserSelected.UserName == u.UserName)
+                                {
+                                    ViewCategorias.UserSelected = u;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
             }
         }
 
@@ -792,6 +824,26 @@ namespace Control_de_cajas.ViewModels
             NewUserAuxiliarView = false;
             NewCashboxAuxiliarView = false;
             ModifyTransactionAuxiliar = false;
+
+            if(CategoryGestionView)
+            {
+                string username = null;
+                if (UserSelected != null)
+                {
+                    username = UserSelected.UserName;
+                    IsSelected = true;
+                    foreach(User u in Users)
+                    {
+                        if(u.UserName == username)
+                        {
+                            UserSelected = u;
+                            break;
+                        }
+                    }
+                }
+
+                CategoryGestionView = false;
+            }
             IsEnabled = true;
         }
 

@@ -12,14 +12,12 @@ namespace Control_de_cajas.ViewModels
     {
         public ViewUsers ViewUser { get; set; }
         public ViewClientes ViewClientes { get; set; }
-        public ViewCategorias ViewCategorias { get; set; }
 
         public ViewModel()
         {
             EstablecerParametrosDeLaBD();
             ViewUser = new ViewUsers();
             ViewClientes = new ViewClientes();
-            ViewCategorias = new ViewCategorias();
             ViewUser.IsSelected = false;
             ViewClientes.IsSelected = true;
         }

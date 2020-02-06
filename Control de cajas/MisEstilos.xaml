@@ -96,6 +96,19 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="16"/>
     </Style>
+
+    <Style x:Key="BotonRedonde" TargetType="Button" BasedOn="{StaticResource EstiloFuenteButtom}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Ellipse Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
     <!--#region ESTILOS DE LOS TEXTBOX-->
     <Style x:Key="EstiloFuenteTextBox" TargetType="TextBox">
