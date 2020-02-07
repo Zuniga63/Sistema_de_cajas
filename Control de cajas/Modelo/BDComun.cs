@@ -667,7 +667,7 @@ namespace Control_de_cajas.Modelo
         /// <param name="customer"></param>
         public static void UpdateCustmerState(Customer customer)
         {
-            PointsSystem.EstablecerParametros(0.1d, 0.04d, 0.02d, -0.02d, -0.04d, -0.08d, -0.1d, PeriodoDeCobro.Mensual);
+            PointsSystem.EstablecerParametros(0.35, 0.1);
 
             List<CustomerTransaction> transactions = ReadCustomerTransaction(customer);         //Las transacciones del clientes
             List<PaymentTracking> paymentsTracking = new List<PaymentTracking>();               //Las estadisticas de pago del cliente
@@ -745,13 +745,10 @@ namespace Control_de_cajas.Modelo
             customer.PaymentPercentage = paymentPercentage;
             customer.Transactions = transactions;
             customer.PaymentsTracking = paymentsTracking;
-            if(customer.CustomerName.Contains("Mild"))
-            {
-                double a = 1;
-            }
+            
             customer.CustomerTracking = PointsSystem.DefineScore2(transactions);
             customer.Balance = balance;
-            customer.Points = PointsSystem.LastPoints;
+            customer.Points = PointsSystem.Points;
             customer.LastDebtDate = lastDateDebt;
             customer.LastDebtAmount = debtAmount;
             customer.AveragePayment = averagePayment;

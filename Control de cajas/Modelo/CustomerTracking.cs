@@ -20,57 +20,41 @@ namespace Control_de_cajas.Modelo
         private decimal _balance;
         public decimal Balance => _balance;
 
-        private DateTime? _cutOfDate;
-        public DateTime? CutOfDate => _cutOfDate;
+        private double _daysOfLastTransaction;
+        public double DaysOfLastTransaction => _daysOfLastTransaction;
 
-        private double? _anticipateDays;
-        public double? AnticipateDays => _anticipateDays;
+        private decimal _realDebt;
+        public decimal RealDebt => _realDebt;
 
-        private double? _incentivePercentage;
-        public double? IncentivePercentage => _incentivePercentage;
+        private decimal _grossProfit; //Beneficio bruto
+        public decimal GrossProfit => _grossProfit;
 
-        private double? _expiredDays;
-        public double? ExpiredDays => _expiredDays;
+        private decimal _netProfit; //Beneficio neto
+        public decimal NetProfit => _netProfit;
 
-        private double? _penaltyPercentage;
-        public double? PenaltyPercentage => _penaltyPercentage;
-
-        private double _partialPoints;
-        public double PartialPoints => _partialPoints;
+        private decimal _financialCost; //Costo financiero
+        public decimal FinancialCost => _financialCost;
 
         private double _points;
         public double Points => _points;
 
-        public CustomerTracking(DateTime transactionDate, decimal? debt, decimal? payment, decimal balance, 
-            DateTime? cutOfDate, double? anticipateDays, double? expiredDays, double partialPoints, double points)
+        public CustomerTracking(DateTime transactionDate, decimal? debt, decimal? payment, decimal balance, double dayOfLastTransaction,
+            decimal realDebt, decimal grossProfit, decimal netProfit, decimal financialCost, double points)
         {
             _transactionDate = transactionDate;
             _debt = debt;
             _payment = payment;
             _balance = balance;
-            _cutOfDate = cutOfDate;
-            _anticipateDays = anticipateDays;
-            _expiredDays = expiredDays;
-            _partialPoints = partialPoints;
+            _daysOfLastTransaction = dayOfLastTransaction;
+            _realDebt = realDebt;
+            _grossProfit = grossProfit;
+            _netProfit = netProfit;
+            _financialCost = financialCost;
             _points = points;
+            
         }
 
-        public CustomerTracking(DateTime transactionDate, decimal? debt, decimal? payment, decimal balance,
-            DateTime? cutOfDate, double? anticipateDays, double? incentivePercentage, double? expiredDays, 
-            double? penaltyPercentage, double partialPoints, double points)
-        {
-            _transactionDate = transactionDate;
-            _debt = debt;
-            _payment = payment;
-            _balance = balance;
-            _cutOfDate = cutOfDate;
-            _anticipateDays = anticipateDays;
-            _incentivePercentage = incentivePercentage;
-            _expiredDays = expiredDays;
-            _penaltyPercentage = penaltyPercentage;
-            _partialPoints = partialPoints;
-            _points = points;
-        }
+        
 
     }
 }

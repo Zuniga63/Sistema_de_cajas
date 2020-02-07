@@ -1044,13 +1044,12 @@
                                                 <DataGridTextColumn Header="Deuda" Binding="{Binding Debt, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
                                                 <DataGridTextColumn Header="Abono" Binding="{Binding Payment, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
                                                 <DataGridTextColumn Header="Saldo" Binding="{Binding Balance, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
-                                                <DataGridTextColumn Header="Corte" Binding="{Binding CutOfDate, StringFormat={}{0:dd-MM-yy}, Mode=OneWay}"/>
-                                                <DataGridTextColumn Header="Ant." Binding="{Binding AnticipateDays, Mode=OneWay}" Width="Auto"/>
-                                                <DataGridTextColumn Header="%" Binding="{Binding IncentivePercentage, StringFormat={}{0:0.0%}, Mode=OneWay}" Width="Auto"/>
-                                                <DataGridTextColumn Header="Mora" Binding="{Binding ExpiredDays, Mode=OneWay}"/>
-                                                <DataGridTextColumn Header="%" Binding="{Binding PenaltyPercentage, StringFormat={}{0:0.0%}, Mode=OneWay}" Width="Auto"/>
-                                                <DataGridTextColumn Header="Parcial" Binding="{Binding PartialPoints, StringFormat={}{0:0.00}, Mode=OneWay}"/>
-                                                <DataGridTextColumn Header="Total" Binding="{Binding Points, StringFormat={}{0:0.00}, Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="Días" Binding="{Binding DaysOfLastTransaction, Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="D.Real" Binding="{Binding RealDebt, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                <DataGridTextColumn Header="G.Bruta" Binding="{Binding GrossProfit, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                <DataGridTextColumn Header="Cost. Fin" Binding="{Binding FinancialCost, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                <DataGridTextColumn Header="G.Neta" Binding="{Binding NetProfit, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
+                                                <DataGridTextColumn Header="Puntos" Binding="{Binding Points, StringFormat={}{0:0.00}, Mode=OneWay}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </DockPanel>

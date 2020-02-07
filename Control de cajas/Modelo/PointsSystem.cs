@@ -18,16 +18,19 @@ namespace Control_de_cajas.Modelo
         public static decimal Payment { get; private set; }
         public static decimal Balance { get; private set; }
 
-        public static decimal DeudaReal;
-        public static double DiasUltimoPago;
-        public static decimal CostoFinanciero;
-        public static decimal GananciaBruta;
-        public static decimal GananciaNeta;
-        public static double Points;
-        
+        public static DateTime? DateOfLastPayment { get; private set; }
+        public static double? DaysOfThisPeriod { get; private set; }
 
-        
-        
+        public static decimal RealDebt { get; private set; }
+        public static double DaysOfLastTransaction { get; private set; }
+        public static decimal FinancialCost { get; private set; }
+        public static decimal GrossProfit { get; private set; }
+        public static decimal NetProfit { get; private set; }
+        public static double Points { get; private set; }
+
+
+
+
         private static void ReloadClass()
         {
             CurrentDate = null;
@@ -35,11 +38,14 @@ namespace Control_de_cajas.Modelo
             Payment = 0m;
             Balance = 0;
 
-            DeudaReal = 0m;
-            DiasUltimoPago = 0;
-            CostoFinanciero = 0;
-            GananciaBruta = 0m;
-            GananciaNeta = 0m;
+            DateOfLastPayment = null;
+            DaysOfThisPeriod = null;
+
+            RealDebt = 0m;
+            DaysOfLastTransaction = 0;
+            FinancialCost = 0;
+            GrossProfit = 0m;
+            NetProfit = 0m;
             Points = 0d;
             
         }
@@ -63,7 +69,7 @@ namespace Control_de_cajas.Modelo
             foreach (CustomerTransaction t in normalizeTransactions)
             {
                 //Se créa el primer registro se seguimiento (tracking)
-                if(firtsTransaction)
+                if (firtsTransaction)
                 {
                     firtsTransaction = false;
                     CurrentDate = t.Fecha;
@@ -71,49 +77,84 @@ namespace Control_de_cajas.Modelo
                     Debt = t.Deuda;
                     Balance = Debt - Payment;
 
-                    DeudaReal = Debt * (decimal)(1 + _utilidad);
+                    RealDebt = (Debt-Payment) / (decimal)((1 + _utilidad));
 
                     //Se crea el registro de seguimiento y se agrega a la lista
-                    
+                    CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
+                        GrossProfit, NetProfit, FinancialCost, Points);
+                    tracking.Add(track);
                 }
                 else
                 {
                     //Se calcula el costo financiero teniendo en cunta los días que han pasado desde la ultima transaccion
                     //o conjunto de transacciones hasta la fecha de esta nueva transaccion
-                    DiasUltimoPago = t.Fecha.Subtract(CurrentDate.Value).TotalDays;
-                    CostoFinanciero += DeudaReal * (decimal)Math.Pow((1 + _interesPeriodico), DiasUltimoPago);
+                    DaysOfLastTransaction = t.Fecha.Subtract(CurrentDate.Value).TotalDays;
+                    FinancialCost += RealDebt * (decimal)(Math.Pow((1 + _interesPeriodico), DaysOfLastTransaction) - 1);
 
                     //Se actulizan los valores con respecto al seguimiento
                     CurrentDate = t.Fecha;
-                    Debt += t.Deuda;
+                    Debt = t.Deuda;
                     Payment = t.Abono;
-                    Balance = Debt - Payment;
+                    Balance += Debt - Payment;
                     
                     if(t.Deuda>0)
                     {
-                        DeudaReal += t.Deuda * (decimal)(1 + _utilidad);
+                        RealDebt += t.Deuda / (decimal)(1 + _utilidad);
                     }
 
                     if(t.Abono>0)
                     {
-                        if (DeudaReal > t.Abono)
+                        if (RealDebt > t.Abono)
                         {
-                            DeudaReal -= t.Abono;
+                            RealDebt -= t.Abono;
                         }
                         else
                         {
-                            GananciaBruta += t.Abono - DeudaReal;
-                            DeudaReal = 0m;
+                            GrossProfit += t.Abono - RealDebt;
+                            RealDebt = 0m;
                         }
                     }
 
-                    GananciaNeta = GananciaBruta - CostoFinanciero;
-                    Points = (double)GananciaNeta / 1000d;
+                    NetProfit = GrossProfit - FinancialCost;
+                    Points = (double)NetProfit / 1000d;
+
+                    CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
+                        GrossProfit, NetProfit, FinancialCost, Points);
+                    tracking.Add(track);
                 }//Fin de else
             }//Fin de foreach
 
-            //Finalmente se actualiza la fecha desde el ultimo cobro
-            DiasUltimoPago = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
+            //Se actualiza la puntuacion como si se realizará el día de hoy el pago
+            if(Balance>0)
+            {
+                //Se calcula el costo financiero teniendo en cunta los días que han pasado desde la ultima transaccion
+                //o conjunto de transacciones hasta la fecha de esta nueva transaccion
+                DaysOfLastTransaction = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
+                FinancialCost += RealDebt * (decimal)(Math.Pow((1 + _interesPeriodico), DaysOfLastTransaction) - 1);
+
+
+
+                GrossProfit += Balance - RealDebt;
+                RealDebt = 0m;
+
+                NetProfit = GrossProfit - FinancialCost;
+                Points = (double)NetProfit / 1000d;
+
+            }
+
+            //Finalmente se actualiza los días de este periodo
+            if(DateOfLastPayment.HasValue)
+            {
+                DaysOfThisPeriod = DateTime.Now.Subtract(DateOfLastPayment.Value).TotalDays;
+            }
+            else if(CurrentDate.HasValue)
+            {
+                DaysOfThisPeriod = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
+            }
+            else
+            {
+                DaysOfThisPeriod = null;
+            }
 
             return tracking;
         }//Fin del metodo
