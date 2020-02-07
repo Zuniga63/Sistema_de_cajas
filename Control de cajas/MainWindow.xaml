@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Control_de_cajas"
         mc:Ignorable="d"
         Icon="Images/comprar.png"
-        Title="Sistema de control de cajas" Height="780" Width="1280" Background="#FF1AC5CD">
+        Title="Sistema de control de cajas" Height="780" Width="1280" Background="{StaticResource FondoGeneral}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,9 +14,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource CabeceraApp}">SISTEMA DE CONTROL DE CAJAS</TextBlock>
+        <TextBlock Style="{StaticResource CabeceraApp}" Foreground="WhiteSmoke">SISTEMA DE CONTROL DE CAJAS</TextBlock>
         <Button DockPanel.Dock="Right" Style="{StaticResource ButtomBasico}" HorizontalAlignment="Right">Conectar</Button>
-        <TabControl Grid.Row="1" Background="#FF1AC5CD">
+        <TabControl Grid.Row="1" Background="{x:Null}">
             <TabItem DataContext="{Binding ViewUser}" IsSelected="{Binding IsSelected}">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource Basica2}">Usuarios y cajas</TextBlock>
@@ -40,7 +40,7 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Style="{StaticResource Titulo1}">Usuarios</TextBlock>
+                                <TextBlock Style="{StaticResource Titulo1}" Foreground="WhiteSmoke">Usuarios</TextBlock>
 
                                 <ListBox Grid.Row="1" HorizontalContentAlignment="Stretch" Margin="5"
                                  ItemsSource="{Binding Users}" 
@@ -50,9 +50,9 @@
                                 </ListBox>
 
                                 <UniformGrid Grid.Row="2" Columns="2" Margin="10,10,10,0">
-                                    <Button Style="{StaticResource ButtomBasico}" Background="LightSalmon" Width="auto" Command="{Binding DeleteUserCmd}" IsEnabled="True">Eliminar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding DeleteUserCmd}" IsEnabled="True">Eliminar</Button>
                                     <Button Style="{StaticResource GreenButtom}" Width="auto" Command="{Binding ActivateViewNewUser}">Nuevo</Button>
-                                    
+
                                 </UniformGrid>
                                 <Button Grid.Row="3" Style="{StaticResource GreenButtom}" Margin="10" Command="{Binding ActivateCategoryGestion}">Gestionar categorías</Button>
                             </Grid>
@@ -66,7 +66,7 @@
 
                                 <!--AREA DE TRABAJO DE LA COLUMNA DE LA IZQUIERDA-->
                                 <Grid Grid.Column="0" Margin="5,10,5,10">
-                                    <Border Grid.Row="0" Grid.RowSpan="2" Background="LightGray" BorderBrush="Gray" BorderThickness="2" CornerRadius="20"/>
+                                    <Border Grid.Row="0" Grid.RowSpan="2" Background="{StaticResource CajasGrises}" BorderBrush="Gray" BorderThickness="2" CornerRadius="20"/>
 
                                     <!--VISUALIZACION DE LAS CAJAS ACTUALES-->
                                     <Grid Grid.Row="1" Margin="5">
@@ -89,7 +89,7 @@
                                 </Grid>
 
                                 <!--AREA DE TRABAJO DE LA COLUMNA DE LA DERECHA-->
-                                <TabControl Grid.Column="1" Margin="10" Background="LightGray" Visibility="Visible">
+                                <TabControl Grid.Column="1" Margin="10" Background="{StaticResource CajasGrises}" Visibility="Visible">
                                     <TabItem Header="Nueva Transaccion">
                                         <Grid>
 
@@ -157,13 +157,13 @@
                                                     <TextBlock Grid.Row="12" Style="{StaticResource Error}" Text="{Binding ErrorOfCategory}" Visibility="{Binding ErrorOfCategory, Converter={StaticResource ErrorVisibility}}"/>
 
                                                     <DockPanel Grid.Row="13">
-                                                        <Button DockPanel.Dock="Right" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveCategoryCmd}" Background="LightSalmon" Width="Auto">Retirar</Button>
+                                                        <Button DockPanel.Dock="Right" Style="{StaticResource RedButtom}" Command="{Binding RemoveCategoryCmd}" >Retirar</Button>
                                                         <TextBox Margin="10" HorizontalContentAlignment="Stretch" Text="{Binding CategoryRoute, Mode=OneWay}" TextWrapping="Wrap"/>
                                                     </DockPanel>
 
 
 
-                                                    <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding AddNewTransactionCmd}" Margin="5,0,5,0">Agregar transaccion</Button>
+                                                    <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding AddNewTransactionCmd}" Margin="10,5,10,5">Agregar transaccion</Button>
 
                                                 </Grid>
 
@@ -245,7 +245,7 @@
                                                     <TextBlock Grid.Row="2" Style="{StaticResource Titulo2}">Por valor de</TextBlock>
                                                     <TextBox Grid.Row="3" Style="{StaticResource CajaDeMoneda}" HorizontalContentAlignment="Right" Text="{Binding AmountToTransfer, StringFormat={}{0:c}}"/>
                                                     <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorInAmount}" Visibility="{Binding ErrorInAmount, Converter={StaticResource ErrorVisibility}}"/>
-                                                    <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Command="{Binding MakeTransferCmd}" Width="Auto" Background="LightGreen" Margin="10,0,10,0">Hacer transferencia</Button>
+                                                    <Button Grid.Row="5" Style="{StaticResource GreenButtom}" Command="{Binding MakeTransferCmd}" Margin="10,0,10,0">Hacer transferencia</Button>
                                                 </Grid>
 
                                                 <Grid Grid.Column="1" Margin="10">
@@ -294,7 +294,7 @@
                                                 <TextBlock Style="{StaticResource Basica2}">Seleccionar categoría:</TextBlock>
                                                 <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Margin="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding CategorySelected}"/>
                                                 <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="3" Text="{Binding CategoryRoute}"/>
-                                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveCategoryCmd}">Quitar</Button>
+                                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource RedButtom}" Command="{Binding RemoveCategoryCmd}">Quitar</Button>
                                             </Grid>
 
                                             <!--AREA DE SELECION DE PERIODO Y DATOS GENERALES-->
@@ -445,7 +445,7 @@
                                                     </TabItem>
                                                 </TabControl>
 
-                                                <Button Grid.Row="3" Style="{StaticResource ButtomBasico}" HorizontalAlignment="Center" Margin="5" Width="200" Background="LightGreen">Copy to Clipboard</Button>
+                                                <Button Grid.Row="3" Style="{StaticResource GreenButtom}" HorizontalAlignment="Center" Margin="5" Width="200" >Copy to Clipboard</Button>
                                             </Grid>
                                         </Grid>
                                     </TabItem>
@@ -455,7 +455,7 @@
                     </Border>
 
                     <!--VISTA CON LAS PESTAÑAS AUXILIARES-->
-                    <Grid Visibility="Visible">
+                    <Grid Visibility="Visible" d:IsHidden="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="4*"/>
@@ -482,9 +482,9 @@
                                 <TextBlock Grid.Row="3" Style="{StaticResource Error}" Margin="6,0,0,0" Text="{Binding ErrorOfNewUser}" Visibility="{Binding ErrorOfNewUser, Converter={StaticResource ErrorVisibility}}"/>
 
                                 <UniformGrid Grid.Row="4" Columns="2">
-                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}">Cancelar</Button>
                                     <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateNewUserCmd}" >Crear</Button>
-                                    
+
                                 </UniformGrid>
 
 
@@ -513,9 +513,9 @@
 
                                 <UniformGrid Grid.Row="6" Columns="2">
 
-                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}">Cancelar</Button>
                                     <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateNewCashboxCmd}">Crear</Button>
-                                    
+
                                 </UniformGrid>
 
 
@@ -576,16 +576,16 @@
 
                                 <UniformGrid Grid.Row="1" Columns="2">
 
-                                    <Button Style="{StaticResource ButtomBasico}" Width="auto" Background="Tomato" Command="{Binding CancelOperation}">Cancelar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}">Cancelar</Button>
                                     <Button Style="{StaticResource GreenButtom}" Command="{Binding ModifyTransactionsCmd}">Modificar</Button>
-                                    
+
                                 </UniformGrid>
                             </Grid>
                         </Border>
                     </Grid>
-                    
+
                     <!--VISTA CON LAS CATEGORÍAS-->
-                    <Grid Background="#AFFF" Visibility="{Binding CategoryGestionView, Converter={StaticResource BoleanToVisivility}}">
+                    <Grid Background="#AFFF" Visibility="{Binding CategoryGestionView, Converter={StaticResource BoleanToVisivility}}" d:IsHidden="True">
                         <Grid Margin="20,0,10,0" Grid.Row="1" DataContext="{Binding ViewCategorias}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -626,7 +626,7 @@
                                         <UniformGrid Grid.Row="8" HorizontalAlignment="Stretch" Rows="1">
                                             <Button Margin="5,2,10,0" Width="Auto" Style="{StaticResource ButtomBasico}" Background="Tomato" IsEnabled="False">Eliminar</Button>
                                             <Button Margin="5,2,10,0" Style="{StaticResource GreenButtom}" Command="{Binding NewMainCategoryCmd}">Nueva</Button>
-                                            
+
                                         </UniformGrid>
 
                                     </Grid>
@@ -650,8 +650,8 @@
                                             <TextBox Grid.Row="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewMainCategoryName, UpdateSourceTrigger=PropertyChanged}"/>
                                             <TextBlock Grid.Row="4" Style="{StaticResource Error}" Text="{Binding ErrorInNewMainCategoryName}" Visibility="{Binding ErrorOfNewCategory, Converter={StaticResource ErrorVisibility}}"/>
                                             <UniformGrid Grid.Row="5" Rows="1">
-                                                <Button Grid.Row="5" Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="Tomato" Command="{Binding CancelOperationCmd}">Salir</Button>
-                                                <Button Grid.Row="5" Style="{StaticResource GreenButtom}" Margin="10,0,10,0" Command="{Binding CreateMainCategoryCmd}">Crear categoría</Button>                                               
+                                                <Button Grid.Row="5" Style="{StaticResource RedButtom}" Margin="10,0,10,0" Command="{Binding CancelOperationCmd}">Salir</Button>
+                                                <Button Grid.Row="5" Style="{StaticResource GreenButtom}" Margin="10,0,10,0" Command="{Binding CreateMainCategoryCmd}">Crear categoría</Button>
                                             </UniformGrid>
 
                                         </Grid>
@@ -668,7 +668,7 @@
 
                                 <Border Grid.Row="0" Margin="10" BorderThickness="2"  Background="#90AFC5" BorderBrush="#2A3132" CornerRadius="20,20,0,0" IsEnabled="{Binding IsEnabled}">
                                     <StackPanel Margin="10,10,10,20">
-                                        <TextBlock Style="{StaticResource Titulo1}">Ruta de categorías</TextBlock>
+                                        <TextBlock Style="{StaticResource Titulo1}"><Run Text="Ruta de categorías"/></TextBlock>
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -680,12 +680,12 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Style="{StaticResource Basica2}" VerticalAlignment="Center">Ruta de categorías actual:</TextBlock>
+                                            <TextBlock Style="{StaticResource Basica2}" VerticalAlignment="Center"><Run Text="Ruta de categorías actual:"/></TextBlock>
 
                                             <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="5" Background="White">
-                                                <TextBlock Style="{StaticResource  Basica1}" Text="{Binding CategoryRoute}"/>
+                                                <TextBlock Style="{StaticResource Basica1}" Text="{Binding CategoryRoute}"/>
                                             </Border>
-                                            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveToRouteCmd}">Regresar</Button>
+                                            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ButtomBasico}" Command="{Binding RemoveToRouteCmd}" Content="Regresar"/>
                                         </Grid>
                                     </StackPanel>
                                 </Border>
@@ -708,21 +708,21 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBlock Style="{StaticResource Titulo1}">Listado de subcategorías</TextBlock>
-                                            <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding MainCategorySelected.Name,StringFormat={}{({0})}}"/>
+                                            <TextBlock Style="{StaticResource Titulo1}"><Run Text="Listado de subcategorías"/></TextBlock>
+                                            <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding MainCategorySelected.Name, StringFormat=\{(\{0\})\}}"/>
                                             <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,10"/>
 
                                             <DockPanel Grid.Row="3" Margin="0,0,0,10">
-                                                <TextBlock Style="{StaticResource Basica2}">Buscar por nombre</TextBlock>
-                                                <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding SubcategoryName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                <TextBlock Style="{StaticResource Basica2}"><Run Text="Buscar por nombre"/></TextBlock>
+                                                <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding SubcategoryName, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DockPanel>
 
-                                            <ListBox Grid.Row="4" ItemsSource="{Binding Subcategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding SubcategorySelected}" HorizontalContentAlignment="Stretch"></ListBox>
+                                            <ListBox Grid.Row="4" ItemsSource="{Binding Subcategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding SubcategorySelected}" HorizontalContentAlignment="Stretch"/>
 
                                             <UniformGrid Grid.Row="5" Rows="1" Margin="10">
-                                                <Button Style="{StaticResource ButtomBasico}" Width="Auto" IsEnabled="False">Eliminar relacion</Button>
-                                                <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding AddToRouteCmd}">Cargar a la ruta</Button>
-                                                
+                                                <Button Style="{StaticResource ButtomBasico}" Width="Auto" IsEnabled="False" Content="Eliminar relacion"/>
+                                                <Button Style="{StaticResource GreenButtom}" Command="{Binding AddToRouteCmd}" Content="Cargar a la ruta"/>
+
                                             </UniformGrid>
                                         </Grid>
                                     </Border>
@@ -739,20 +739,20 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <TextBlock Style="{StaticResource Titulo1}">Categorías disponibless</TextBlock>
-                                                <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase actual: {0}}"/>
+                                                <TextBlock Style="{StaticResource Titulo1}"><Run Text="Categorías disponibless"/></TextBlock>
+                                                <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase actual: \{0\}}"/>
                                                 <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,10"/>
 
                                                 <DockPanel Grid.Row="3" Margin="0,0,0,10">
-                                                    <TextBlock Style="{StaticResource Basica2}">Buscar por nombre</TextBlock>
-                                                    <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding AvailableCategoryName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                    <TextBlock Style="{StaticResource Basica2}"><Run Text="Buscar por nombre"/></TextBlock>
+                                                    <TextBox Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding AvailableCategoryName, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DockPanel>
 
-                                                <ListBox Grid.Row="4" ItemsSource="{Binding AvailableCategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding AvailableCategorySelected}" HorizontalContentAlignment="Stretch"></ListBox>
+                                                <ListBox Grid.Row="4" ItemsSource="{Binding AvailableCategories}" ItemTemplate="{StaticResource CategoryDT}" SelectedItem="{Binding AvailableCategorySelected}" HorizontalContentAlignment="Stretch"/>
 
                                                 <UniformGrid Grid.Row="5" Rows="1" Margin="10">
-                                                    <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding MatchCategoryCmd}">Relacionar a ruta</Button>
-                                                    <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding NewSubcatetoryCmd}">Nueva categoría</Button>
+                                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding MatchCategoryCmd}" Content="Relacionar a ruta"/>
+                                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding NewSubcatetoryCmd}" Content="Nueva categoría"/>
                                                 </UniformGrid>
                                             </Grid>
 
@@ -769,16 +769,16 @@
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
 
-                                                    <TextBlock Grid.Row="0" Style="{StaticResource Titulo2}">Nueva subcategoría</TextBlock>
-                                                    <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase #:{0}}"/>
-                                                    <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,20"></Border>
-                                                    <TextBlock Grid.Row="3" Style="{StaticResource Basica2}">Nombre</TextBlock>
+                                                    <TextBlock Grid.Row="0" Style="{StaticResource Titulo2}"><Run Text="Nueva subcategoría"/></TextBlock>
+                                                    <TextBlock Grid.Row="1" Style="{StaticResource Basica1}" HorizontalAlignment="Center" Text="{Binding CurrentClass, StringFormat=Clase #:\{0\}}"/>
+                                                    <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,20"/>
+                                                    <TextBlock Grid.Row="3" Style="{StaticResource Basica2}"><Run Text="Nombre"/></TextBlock>
                                                     <TextBox Grid.Row="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding NewSubcategoryName, UpdateSourceTrigger=PropertyChanged}"/>
                                                     <TextBlock Grid.Row="5" Style="{StaticResource Error}" Text="{Binding ErrorInNewSubcategoryName}" Visibility="{Binding ErrorOfNewCategory, Converter={StaticResource ErrorVisibility}}"/>
                                                     <UniformGrid Grid.Row="6" Rows="1">
-                                                        <Button Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="Tomato" Command="{Binding CancelOperationCmd}">Salir</Button>
-                                                        <Button Style="{StaticResource ButtomBasico}" Margin="10,0,10,0" Width="Auto" Background="LightGreen" Command="{Binding CreateSubcategoryCmd}">Crear categoría</Button>
-                                                        
+                                                        <Button Style="{StaticResource RedButtom}" Margin="10,0,10,0" Command="{Binding CancelOperationCmd}" Content="Salir"/>
+                                                        <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,0" Command="{Binding CreateSubcategoryCmd}" Content="Crear categoría"/>
+
                                                     </UniformGrid>
                                                 </Grid>
                                             </Border>
@@ -789,7 +789,7 @@
                             </Grid>
 
                         </Grid>
-                        
+
                         <Button HorizontalAlignment="Right" VerticalAlignment="Top" Width="30" Height="30" Margin="0,15,40,0" Command="{Binding CancelOperation}">X</Button>
                     </Grid>
                 </Grid>
@@ -812,7 +812,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--SELECCION DEL CLIENTE-->
-                        <Border BorderBrush="DarkGoldenrod" BorderThickness="4" Background="Goldenrod" Margin="10" CornerRadius="15">
+                        <Border BorderBrush="Gray" BorderThickness="4" Background="{StaticResource CajasGrises}" Margin="10" CornerRadius="15">
                             <Grid Grid.Column="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -867,7 +867,7 @@
                                 <TextBlock Grid.Row="11" Style="{StaticResource Basica1}" HorizontalAlignment="Right" Margin="0,0,10,0" Text="{Binding Customers.Count, StringFormat=Clientes: {0}}"/>
 
                                 <UniformGrid Grid.Row="12" Columns="2">
-                                    <Button Style="{StaticResource ButtomBasico}" Background="LightSalmon" Command="{Binding DeleteCustomerCmd}" Width="auto" Margin="10,0,10,10">Eliminar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding DeleteCustomerCmd}" Margin="10,0,10,10">Eliminar</Button>
                                     <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewCustomerView}">Nuevo</Button>
                                 </UniformGrid>
 
@@ -880,7 +880,7 @@
                                 <RowDefinition Height="5*"/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
-                            <TabControl Grid.Row="0" Margin="10,0,10,0" Background="LightBlue">
+                            <TabControl Grid.Row="0" Margin="10,0,10,0" Background="{StaticResource BlueRaspBerry}">
                                 <TabItem IsSelected="True">
                                     <TabItem.Header>
                                         <TextBlock Style="{StaticResource Basica2}">Informacion</TextBlock>
@@ -1015,7 +1015,7 @@
                                     <TabItem.Header>
                                         <TextBlock Style="{StaticResource Basica2}">Consultas</TextBlock>
                                     </TabItem.Header>
-                                    
+
                                 </TabItem>
                             </TabControl>
 
@@ -1068,7 +1068,7 @@
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
 
-                            <Border Background="Goldenrod" BorderBrush="DarkGoldenrod" BorderThickness="2" CornerRadius="15" Margin="10">
+                            <Border Background="{StaticResource CajasGrises}" BorderBrush="Gray" BorderThickness="2" CornerRadius="15" Margin="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -1084,7 +1084,7 @@
                                 </Grid>
                             </Border>
 
-                            <Border Grid.Row="1" Background="Goldenrod" BorderBrush="DarkGoldenrod" BorderThickness="2" CornerRadius="15" Margin="10">
+                            <Border Grid.Row="1" Background="{StaticResource CajasGrises}" BorderBrush="Gray" BorderThickness="2" CornerRadius="15" Margin="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -1135,7 +1135,7 @@
                             <ColumnDefinition Width="4*"/>
                             <ColumnDefinition Width="180"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="1" Height="450" Background="Goldenrod" BorderBrush="DarkGoldenrod" BorderThickness="2" CornerRadius="15" Visibility="{Binding NewCustomerAux, Converter={StaticResource BoleanToVisivility}}">
+                        <Border Grid.Column="1" Height="450" Background="{StaticResource LightOrange}" BorderBrush="DarkGoldenrod" BorderThickness="2" CornerRadius="15" Visibility="{Binding NewCustomerAux, Converter={StaticResource BoleanToVisivility}}">
                             <Grid Margin="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -1170,7 +1170,7 @@
                                 <TextBox Grid.Row="13" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding NewCustomerObservation}"/>
                                 <UniformGrid Grid.Row="14" Columns="2">
                                     <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding CreateNewCustomerCmd}" Margin="10,0,10,10" >Crear</Button>
-                                    <Button Grid.Row="14" Style="{StaticResource ButtomBasico}" Command="{Binding CancelOperation}" Width="Auto" Margin="10,0,10,10" Background="LightSalmon">Cancelar</Button>
+                                    <Button Grid.Row="14" Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}" Margin="10,0,10,10">Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
                         </Border>
@@ -1209,7 +1209,7 @@
                                 <TextBlock Grid.Row="8" Style="{StaticResource Error}" Text="{Binding ErrorOfAmountDebt}" Visibility="{Binding ErrorOfAmountDebt, Converter={StaticResource ErrorVisibility}}"/>
                                 <UniformGrid Grid.Row="9" Columns="2" Margin="10">
                                     <Button Style="{StaticResource GreenButtom}" Command="{Binding CreateDebtCmd}" >Crear</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Width="Auto" Command="{Binding CancelOperation}" Background="LightSalmon">Cancelar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}" >Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
                         </Border>
@@ -1253,7 +1253,7 @@
                                 <TextBlock Grid.Row="9" Style="{StaticResource Error}" Text="{Binding ErrorInAmountPayment}" Visibility="{Binding ErrorInAmountPayment, Converter={StaticResource ErrorVisibility}}"/>
                                 <UniformGrid Grid.Row="10" Margin="5,10,5,10" Columns="2">
                                     <Button Style="{StaticResource GreenButtom}" Command="{Binding CreatePaymentCmd}" >Crear</Button>
-                                    <Button Style="{StaticResource ButtomBasico}" Command="{Binding CancelOperation}" Width="Auto" Background="LightSalmon">Cancelar</Button>
+                                    <Button Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}" >Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
                         </Border>
@@ -1261,7 +1261,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            
+
         </TabControl>
         <TextBlock Grid.Row="2" Style="{StaticResource Basica1}" HorizontalAlignment="Right">Version: 0.1.1</TextBlock>
     </Grid>
