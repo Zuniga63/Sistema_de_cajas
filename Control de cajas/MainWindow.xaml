@@ -161,8 +161,6 @@
                                                         <TextBox Margin="10" HorizontalContentAlignment="Stretch" Text="{Binding CategoryRoute, Mode=OneWay}" TextWrapping="Wrap"/>
                                                     </DockPanel>
 
-
-
                                                     <Button Grid.Row="14" Style="{StaticResource GreenButtom}" Command="{Binding AddNewTransactionCmd}" Margin="10,5,10,5">Agregar transaccion</Button>
 
                                                 </Grid>

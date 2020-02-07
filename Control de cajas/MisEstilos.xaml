@@ -92,7 +92,8 @@
 
     <LinearGradientBrush x:Key="GreenGradient" StartPoint="0,0" EndPoint="0,1">
         <GradientStopCollection>
-            <GradientStop Color="LightGreen" Offset="0.3"/>
+            <GradientStop Color="White" Offset="0"/>
+            <GradientStop Color="LightGreen" Offset="0.5"/>
             <GradientStop Color="Green" Offset="1"/>
         </GradientStopCollection>
     </LinearGradientBrush>
@@ -141,11 +142,6 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="5" RenderingBias="Quality" Color="Black" Opacity="0.5" ShadowDepth="5"/>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style x:Key="GreenButtom" TargetType="Button" BasedOn="{StaticResource ButtomBasico}">
