@@ -8,6 +8,7 @@
     <converts:ConvertBooleanToColorBackgraund x:Key="BooleanToColorBackground"/>
     <converts:ConvertIntToColorBackgraund x:Key="IntToColoBackground"/>
     <converts:ConvertBooleanToVisibilityCollapsed x:Key="BoleanToVisivility"/>
+    <converts:ConvertBooleanToBlurRadius x:Key="BoleanToBlurRadius"/>
 
     <!--#region ESTILOS DE LOS TEXTBLOCK-->
     <Style x:Key="EstiloFuenteEtiqueta" TargetType="TextBlock">
@@ -98,10 +99,10 @@
         </GradientStopCollection>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueRaspBerry" StartPoint="0,0" EndPoint="1,1">
+    <LinearGradientBrush x:Key="BlueRaspBerry" StartPoint="0,0" EndPoint="0,1">
         <GradientStopCollection>
-            <GradientStop Color="#ABBAAB" Offset="0"/>
-            <GradientStop Color="#ffffff" Offset="1"/>
+            <GradientStop Color="#bdc3c7" Offset="0"/>
+            <GradientStop Color="#2c3e50" Offset="1"/>
         </GradientStopCollection>
     </LinearGradientBrush>
 

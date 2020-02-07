@@ -38,6 +38,34 @@ namespace Utilidades
         }
     }
 
+    [ValueConversion(typeof(bool), typeof(int))]
+    public class ConvertBooleanToBlurRadius : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool? res = value as bool?;
+            if (res != null && res.HasValue)
+            {
+                if (res.Value)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 10;
+                }
+            }
+
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Visibility res = (Visibility)value;
+            return res == Visibility.Visible ? true : false;
+        }
+    }
+
     public class ConvertBooleanToColorBackgraund : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

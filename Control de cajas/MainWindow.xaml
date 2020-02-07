@@ -1116,13 +1116,17 @@
 
                         </Grid>
 
-
+                        <!--
+                        <Grid.BitmapEffect>
+                            <BlurBitmapEffect Radius="{Binding IsEnabled, Converter={StaticResource BoleanToBlurRadius}}"/>
+                        </Grid.BitmapEffect>
+                        -->
                     </Grid>
 
                     <!--#endregion-->
 
                     <!--#region ELEMENTOS AUXILIARES-->
-                    <Grid>
+                    <Grid d:IsHidden="True">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20"/>
@@ -1171,6 +1175,9 @@
                                     <Button Grid.Row="14" Style="{StaticResource RedButtom}" Command="{Binding CancelOperation}" Margin="10,0,10,10">Cancelar</Button>
                                 </UniformGrid>
                             </Grid>
+                            <Border.BitmapEffect>
+                                <DropShadowBitmapEffect Color="Black" Opacity="0.4" Softness="0.8" Direction="315" ShadowDepth="16"/>
+                            </Border.BitmapEffect>
                         </Border>
                         <Border Grid.Column="3" Width="300" Height="350" BorderBrush="SteelBlue" BorderThickness="2" Background="LightSeaGreen" CornerRadius="10" Visibility="{Binding NewDebtAux, Converter={StaticResource BoleanToVisivility}}">
                             <Grid Margin="10">
