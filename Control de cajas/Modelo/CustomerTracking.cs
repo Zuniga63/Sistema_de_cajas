@@ -38,8 +38,11 @@ namespace Control_de_cajas.Modelo
         private double _points;
         public double Points => _points;
 
+        private decimal _creditLimit;
+        public decimal CreditLimit => _creditLimit;
+
         public CustomerTracking(DateTime transactionDate, decimal? debt, decimal? payment, decimal balance, double dayOfLastTransaction,
-            decimal realDebt, decimal grossProfit, decimal netProfit, decimal financialCost, double points)
+            decimal realDebt, decimal grossProfit, decimal netProfit, decimal financialCost, double points, decimal creditLimit)
         {
             _transactionDate = transactionDate;
             _debt = debt;
@@ -51,7 +54,7 @@ namespace Control_de_cajas.Modelo
             _netProfit = netProfit;
             _financialCost = financialCost;
             _points = points;
-            
+            _creditLimit = creditLimit;
         }
 
         

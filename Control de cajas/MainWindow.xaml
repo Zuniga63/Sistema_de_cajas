@@ -1050,6 +1050,7 @@
                                                 <DataGridTextColumn Header="Cost. Fin" Binding="{Binding FinancialCost, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
                                                 <DataGridTextColumn Header="G.Neta" Binding="{Binding NetProfit, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
                                                 <DataGridTextColumn Header="Puntos" Binding="{Binding Points, StringFormat={}{0:0.00}, Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="Cupo" Binding="{Binding CreditLimit, StringFormat={}{0:c}, Mode=OneWay}" CellStyle="{StaticResource MoneyCellStyle}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </DockPanel>

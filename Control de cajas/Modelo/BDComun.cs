@@ -507,7 +507,7 @@ namespace Control_de_cajas.Modelo
         public static List<Customer> ReadAllCustomers(User user)
         {
             List<Customer> customers = new List<Customer>();
-            string query = "SELECT customer_id, customer_name, balance, observation, nit, address, phone FROM customer ";
+            string query = "SELECT customer_id, customer_name, balance, observation, nit, address, phone, credit_limit FROM customer ";
             query += "WHERE user_id = " + user.ID;
 
             
@@ -522,8 +522,9 @@ namespace Control_de_cajas.Modelo
                     string nit = reader.IsDBNull(4) ? null : reader.GetString("nit");
                     string address = reader.IsDBNull(5) ? null : reader.GetString("address");
                     string phone = reader.IsDBNull(6) ? null : reader.GetString("phone");
+                    decimal creditLimit = reader.GetDecimal("credit_limit");
 
-                    Customer customer = new Customer(id, user.ID, name, observation, nit, address, phone, balance);
+                    Customer customer = new Customer(id, user.ID, name, observation, nit, address, phone, balance, creditLimit);
                     customers.Add(customer);
                 }
             }
@@ -746,7 +747,7 @@ namespace Control_de_cajas.Modelo
             customer.Transactions = transactions;
             customer.PaymentsTracking = paymentsTracking;
             
-            customer.CustomerTracking = PointsSystem.DefineScore2(transactions);
+            customer.CustomerTracking = PointsSystem.DefineScore(transactions, customer);
             customer.Balance = balance;
             customer.Points = PointsSystem.Points;
             customer.LastDebtDate = lastDateDebt;

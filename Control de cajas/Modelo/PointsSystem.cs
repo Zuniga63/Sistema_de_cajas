@@ -27,6 +27,7 @@ namespace Control_de_cajas.Modelo
         public static decimal GrossProfit { get; private set; }
         public static decimal NetProfit { get; private set; }
         public static double Points { get; private set; }
+        public static decimal CreditLimit { get; private set; }
 
 
 
@@ -47,7 +48,7 @@ namespace Control_de_cajas.Modelo
             GrossProfit = 0m;
             NetProfit = 0m;
             Points = 0d;
-            
+            CreditLimit = 0m;
         }
 
 
@@ -59,12 +60,13 @@ namespace Control_de_cajas.Modelo
         }
 
         
-        public static List<CustomerTracking> DefineScore2(List<CustomerTransaction> transactions)
+        public static List<CustomerTracking> DefineScore(List<CustomerTransaction> transactions, Customer customer)
         {
             bool firtsTransaction = true;
             List<CustomerTracking> tracking = new List<CustomerTracking>();
             List<CustomerTransaction> normalizeTransactions = NormalizeTransactions(transactions);
             ReloadClass();
+            decimal creditLimitBasic = customer.Creditlimit;
 
             foreach (CustomerTransaction t in normalizeTransactions)
             {
@@ -78,10 +80,11 @@ namespace Control_de_cajas.Modelo
                     Balance = Debt - Payment;
 
                     RealDebt = (Debt-Payment) / (decimal)((1 + _utilidad));
+                    creditLimitBasic -= Balance;
 
                     //Se crea el registro de seguimiento y se agrega a la lista
                     CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
-                        GrossProfit, NetProfit, FinancialCost, Points);
+                        GrossProfit, NetProfit, FinancialCost, Points, CreditLimit);
                     tracking.Add(track);
                 }
                 else
@@ -100,6 +103,7 @@ namespace Control_de_cajas.Modelo
                     if(t.Deuda>0)
                     {
                         RealDebt += t.Deuda / (decimal)(1 + _utilidad);
+                        creditLimitBasic -= t.Deuda;
                     }
 
                     if(t.Abono>0)
@@ -113,34 +117,22 @@ namespace Control_de_cajas.Modelo
                             GrossProfit += t.Abono - RealDebt;
                             RealDebt = 0m;
                         }
+
+                        creditLimitBasic += t.Abono;
                     }
 
                     NetProfit = GrossProfit - FinancialCost;
                     Points = (double)NetProfit / 1000d;
+                    CreditLimit = creditLimitBasic + NetProfit;
 
                     CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
-                        GrossProfit, NetProfit, FinancialCost, Points);
+                        GrossProfit, NetProfit, FinancialCost, Points, CreditLimit);
                     tracking.Add(track);
                 }//Fin de else
             }//Fin de foreach
 
-            //Se actualiza la puntuacion como si se realizará el día de hoy el pago
-            if(Balance>0)
-            {
-                //Se calcula el costo financiero teniendo en cunta los días que han pasado desde la ultima transaccion
-                //o conjunto de transacciones hasta la fecha de esta nueva transaccion
-                DaysOfLastTransaction = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
-                FinancialCost += RealDebt * (decimal)(Math.Pow((1 + _interesPeriodico), DaysOfLastTransaction) - 1);
-
-
-
-                GrossProfit += Balance - RealDebt;
-                RealDebt = 0m;
-
-                NetProfit = GrossProfit - FinancialCost;
-                Points = (double)NetProfit / 1000d;
-
-            }
+            //Ahora se calcula el cupo del cliente
+            customer.Creditlimit = CreditLimit;
 
             //Finalmente se actualiza los días de este periodo
             if(DateOfLastPayment.HasValue)

@@ -106,6 +106,17 @@ namespace Control_de_cajas.Modelo
             }
         }
 
+        private decimal _creditLimit;
+        public decimal Creditlimit
+        {
+            get { return _creditLimit; }
+            set
+            {
+                _creditLimit = value;
+                OnPropertyChanged("CreditLimit");
+            }
+        }
+
         //++++++++++++++++++++++++++++++++++++++++++++
         //Informacion obtenida aplicando logica sobre las transacciones
         private double _points;
@@ -244,7 +255,7 @@ namespace Control_de_cajas.Modelo
         public List<CustomerTracking> CustomerTracking { get; set; }
 
         public Customer(int customerID, int userID, string customerName, string observation,
-            string nit, string address, string phone, decimal balance)
+            string nit, string address, string phone, decimal balance, decimal creditLimit)
         {
             _userID = userID;
             _customerID = customerID;
@@ -254,6 +265,8 @@ namespace Control_de_cajas.Modelo
             _address = address;
             _phone = phone;
             _balance = balance;
+            _creditLimit = creditLimit;
+
             Transactions = new List<CustomerTransaction>();
             PaymentsTracking = new List<PaymentTracking>();
             CustomerTracking = new List<CustomerTracking>();
