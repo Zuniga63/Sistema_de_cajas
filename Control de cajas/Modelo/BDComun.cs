@@ -740,20 +740,21 @@ namespace Control_de_cajas.Modelo
             }
 
             //Finalmente se actualiza el cliente
-            customer.CutoffDate = cutOffDate;
-            customer.LastPaymentDate = paymentDate;
-            customer.LastPayment = paymentAmount;
-            customer.PaymentPercentage = paymentPercentage;
-            customer.Transactions = transactions;
-            customer.PaymentsTracking = paymentsTracking;
+            
             
             customer.CustomerTracking = PointsSystem.DefineScore(transactions, customer);
-            customer.Balance = balance;
+            customer.CutoffDate = cutOffDate;
+            customer.LastPaymentDate = PointsSystem.DateOfLastPayment;
+            customer.LastPayment = PointsSystem.LastPayment;
+            customer.PaymentPercentage = PointsSystem.PaymentPercentage;
+            customer.Transactions = transactions;
+            customer.PaymentsTracking = paymentsTracking;
+            customer.Balance = PointsSystem.Balance;
             customer.Points = PointsSystem.Points;
-            customer.LastDebtDate = lastDateDebt;
-            customer.LastDebtAmount = debtAmount;
-            customer.AveragePayment = averagePayment;
-            
+            customer.LastDebtDate = PointsSystem.DateOfLastDebt;
+            customer.LastDebtAmount = PointsSystem.LastDebt;
+            customer.AveragePayment = PointsSystem.AveragePayment;
+            customer.Days =(int) Math.Floor(PointsSystem.DaysOfThisPeriod.Value);
 
             
         }

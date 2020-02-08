@@ -14,7 +14,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource CabeceraApp}" Foreground="WhiteSmoke">SISTEMA DE CONTROL DE CAJAS</TextBlock>
+        <TextBlock Style="{StaticResource CabeceraApp}" Foreground="WhiteSmoke" Text="SISTEMA DE CONTROL DE CAJAS">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="White" BlurRadius="3" Opacity="0.5" ShadowDepth="3"/>
+            </TextBlock.Effect>
+        </TextBlock>
         <Button DockPanel.Dock="Right" Style="{StaticResource ButtomBasico}" HorizontalAlignment="Right">Conectar</Button>
         <TabControl Grid.Row="1" Background="{x:Null}">
             <TabItem DataContext="{Binding ViewUser}" IsSelected="{Binding IsSelected}">
@@ -892,7 +896,7 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBlock Style="{StaticResource Titulo2}">Datos del cliente</TextBlock>
+                                            <TextBlock Style="{StaticResource Titulo2}" Foreground="White">DATOS DEL CLIENTE</TextBlock>
                                             <Grid Grid.Row="1">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
@@ -918,7 +922,7 @@
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource Basica2}">Nombre:</TextBlock>
+                                                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource Basica2}" Foreground="White">Nombre:</TextBlock>
                                                     <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerName}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
                                                     <TextBlock Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource Error}" Text="{Binding ErrorOfUpdateCustomerName}" Visibility="{Binding ErrorOfUpdateCustomerName, Converter={StaticResource ErrorVisibility}}">El nombre ya está en uso</TextBlock>
 
@@ -926,14 +930,14 @@
                                                     <Button Grid.Row="2" Grid.Column="5" Style="{StaticResource ButtomBasico}" IsEnabled="False">Eliminar</Button>
                                                     <Button Grid.Row="4" Grid.Column="5" Style="{StaticResource GreenButtom}" Command="{Binding UpdateCustomerSelectedCmd}">Actualizar</Button>
 
-                                                    <TextBlock Grid.Row="2" Style="{StaticResource Basica2}">Nit:</TextBlock>
+                                                    <TextBlock Grid.Row="2" Style="{StaticResource Basica2}" Foreground="White">Nit:</TextBlock>
                                                     <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerNit}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
                                                     <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource Error}" Text="{Binding ErrorOfUpdateCustomerNit}" Visibility="{Binding ErrorOfUpdateCustomerNit, Converter={StaticResource ErrorVisibility}}"/>
 
-                                                    <TextBlock Grid.Row="2" Grid.Column="3" Style="{StaticResource Basica2}">Telefono:</TextBlock>
+                                                    <TextBlock Grid.Row="2" Grid.Column="3" Style="{StaticResource Basica2}" Foreground="White">Telefono:</TextBlock>
                                                     <TextBox Grid.Row="2" Grid.Column="4" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerPhone}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
 
-                                                    <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource Basica2}">Direccion:</TextBlock>
+                                                    <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource Basica2}" Foreground="White">Direccion:</TextBlock>
                                                     <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource EstiloCajaTextoSencilla}" Text="{Binding CustomerAddres}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
                                                 </Grid>
                                                 <Grid Grid.Row="1">
@@ -946,7 +950,7 @@
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Titulo2}">Observaciones</TextBlock>
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Titulo2}" Foreground="White">Observaciones</TextBlock>
                                                     <TextBox Grid.Row="1" Grid.Column="0" Style="{StaticResource EstiloCajaTextoDoble}" Text="{Binding CustomerObservation}" IsReadOnly="{Binding CustomerIsReadOnly}"/>
 
                                                     <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" DataContext="{Binding CustomerSelected}">
@@ -959,50 +963,41 @@
                                                         </Grid.RowDefinitions>
 
                                                         <StackPanel Grid.Row="0">
-                                                            <TextBlock Style="{StaticResource Titulo2}">Saldo</TextBlock>
-                                                            <Border BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0"></Border>
-                                                            <TextBlock Style="{StaticResource Titulo1}" Text="{Binding Balance, Mode=OneWay,StringFormat={}{0:c}}"/>
+                                                            <TextBlock Style="{StaticResource Titulo2}" Foreground="White">Saldo</TextBlock>
+                                                            <Border BorderBrush="White" BorderThickness="1" Margin="5,0,5,0"></Border>
+                                                            <TextBlock Style="{StaticResource Titulo1}" Text="{Binding Balance, Mode=OneWay,StringFormat={}{0:c}}" Foreground="White"/>
                                                         </StackPanel>
 
                                                         <StackPanel Grid.Row="1">
                                                             <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
-                                                                <TextBlock Style="{StaticResource Basica2}">Fecha del ultimo pago:</TextBlock>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding LastPaymentDate, StringFormat={}{0:dd-MM-yyyy}}"/>
-                                                            </StackPanel>
-
-                                                            <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeSaldo, Converter={StaticResource BoleanToVisivility}}">
-                                                                <TextBlock Style="{StaticResource Basica2}">Fecha del siguiente pago:</TextBlock>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding CutoffDate, StringFormat={}{0:dd-MM-yyyy}}"/>
-                                                            </StackPanel>
-
-                                                            <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
-                                                                <TextBlock Style="{StaticResource Basica2}">Importe del ultimo abono:</TextBlock>
+                                                                <TextBlock Style="{StaticResource Basica2}">Ultimo abono:</TextBlock>
                                                                 <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding LastPayment, StringFormat={}{0:c}}"/>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding PaymentPercentage, StringFormat=({0:0.0%})}"/>
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding PaymentPercentage, StringFormat=({0:0.0%})}" FontWeight="Bold"/>
                                                             </StackPanel>
-
-                                                            <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeMora, Converter={StaticResource BoleanToVisivility}}">
-                                                                <TextBlock Style="{StaticResource Basica2}">Dias de mora:</TextBlock>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Days, StringFormat={}{0} días}"/>
+                                                            
+                                                            <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                                                                <TextBlock Style="{StaticResource Basica2}">Realizado el:</TextBlock>
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding LastPaymentDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Days, StringFormat={}({0} Días)}"/>
                                                             </StackPanel>
 
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Style="{StaticResource Basica2}">Puntuacion:</TextBlock>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Points, StringFormat={}{0:0.00}}"/>
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding Points, StringFormat={}{0:0.00}}" FontWeight="Bold"/>
                                                             </StackPanel>
 
                                                             <StackPanel Orientation="Horizontal" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
-                                                                <TextBlock Style="{StaticResource Basica2}">Abono promedio:</TextBlock>
-                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding AveragePayment, StringFormat={}{0:c}}"/>
+                                                                <TextBlock Style="{StaticResource Basica2}">Abono promedio mensual:</TextBlock>
+                                                                <TextBlock Style="{StaticResource Basica2}" Margin="5,0,0,0" Text="{Binding AveragePayment, StringFormat={}{0:c}}" FontWeight="Bold"/>
                                                             </StackPanel>
                                                         </StackPanel>
 
                                                     </Grid>
                                                 </Grid>
 
-                                                <UniformGrid Grid.Row="2" Columns="2" Margin="10">
-                                                    <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewDebtView}">NUEVA DEUDA</Button>
-                                                    <Button Style="{StaticResource GreenButtom}" Margin="10,0,10,10" Command="{Binding ActivateNewPaymentView}">HACER ABONO</Button>
+                                                <UniformGrid Grid.Row="2" Columns="2" Margin="10,5,10,10">
+                                                    <Button Style="{StaticResource GreenButtom}"  Command="{Binding ActivateNewDebtView}">NUEVA DEUDA</Button>
+                                                    <Button Style="{StaticResource GreenButtom}" Command="{Binding ActivateNewPaymentView}">HACER ABONO</Button>
                                                 </UniformGrid>
                                             </Grid>
                                         </Grid>

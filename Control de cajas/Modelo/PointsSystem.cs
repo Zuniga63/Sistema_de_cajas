@@ -19,6 +19,13 @@ namespace Control_de_cajas.Modelo
         public static decimal Balance { get; private set; }
 
         public static DateTime? DateOfLastPayment { get; private set; }
+        public static decimal? LastPayment { get; private set; }
+        public static double? PaymentPercentage { get; private set; }
+        public static decimal? AveragePayment { get; private set; }
+
+        public static DateTime? DateOfLastDebt { get; private set; }
+        public static decimal? LastDebt { get; private set; }
+
         public static double? DaysOfThisPeriod { get; private set; }
 
         public static decimal RealDebt { get; private set; }
@@ -40,6 +47,13 @@ namespace Control_de_cajas.Modelo
             Balance = 0;
 
             DateOfLastPayment = null;
+            LastPayment = null;
+            PaymentPercentage = null;
+            AveragePayment = null;
+
+            DateOfLastDebt = null;
+            LastDebt = null;
+
             DaysOfThisPeriod = null;
 
             RealDebt = 0m;
@@ -67,6 +81,7 @@ namespace Control_de_cajas.Modelo
             List<CustomerTransaction> normalizeTransactions = NormalizeTransactions(transactions);
             ReloadClass();
             decimal creditLimitBasic = customer.Creditlimit;
+            
 
             foreach (CustomerTransaction t in normalizeTransactions)
             {
@@ -82,6 +97,9 @@ namespace Control_de_cajas.Modelo
                     RealDebt = (Debt-Payment) / (decimal)((1 + _utilidad));
                     creditLimitBasic -= Balance;
 
+                    DateOfLastDebt = CurrentDate;
+                    LastDebt = Balance;
+
                     //Se crea el registro de seguimiento y se agrega a la lista
                     CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
                         GrossProfit, NetProfit, FinancialCost, Points, CreditLimit);
@@ -96,18 +114,24 @@ namespace Control_de_cajas.Modelo
 
                     //Se actulizan los valores con respecto al seguimiento
                     CurrentDate = t.Fecha;
-                    Debt = t.Deuda;
-                    Payment = t.Abono;
-                    Balance += Debt - Payment;
+                    Debt = 0m;
+                    Payment = 0m;
+                    
                     
                     if(t.Deuda>0)
                     {
+                        Debt = t.Deuda;
+
                         RealDebt += t.Deuda / (decimal)(1 + _utilidad);
                         creditLimitBasic -= t.Deuda;
+                        LastDebt = Debt;
+                        DateOfLastDebt = CurrentDate;
                     }
 
                     if(t.Abono>0)
                     {
+                        Payment = t.Abono;
+
                         if (RealDebt > t.Abono)
                         {
                             RealDebt -= t.Abono;
@@ -117,9 +141,13 @@ namespace Control_de_cajas.Modelo
                             GrossProfit += t.Abono - RealDebt;
                             RealDebt = 0m;
                         }
-
+                        DateOfLastPayment = CurrentDate;
+                        LastPayment = t.Abono;
+                        PaymentPercentage = Balance>0 ? (double)(Payment / Balance) : 0d;
                         creditLimitBasic += t.Abono;
                     }
+
+                    Balance += Debt - Payment;
 
                     NetProfit = GrossProfit - FinancialCost;
                     Points = (double)NetProfit / 1000d;
@@ -134,19 +162,29 @@ namespace Control_de_cajas.Modelo
             //Ahora se calcula el cupo del cliente
             customer.Creditlimit = CreditLimit;
 
-            //Finalmente se actualiza los días de este periodo
-            if(DateOfLastPayment.HasValue)
+            //Se actualiza los días de este periodo que se calculan desde la ultima transaccion o desde el ultimo pago del cliente
+            if(DateOfLastPayment.HasValue && Balance>0)
             {
                 DaysOfThisPeriod = DateTime.Now.Subtract(DateOfLastPayment.Value).TotalDays;
             }
-            else if(CurrentDate.HasValue)
+            else if(CurrentDate.HasValue && Balance>0)
             {
                 DaysOfThisPeriod = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
             }
             else
             {
-                DaysOfThisPeriod = null;
+                DaysOfThisPeriod = 0d;
             }
+
+            //Ahora se ajusta la puntuacion del cliente como si realizará el pago el día de hoy, solo se hace para clientes con
+            //balance superior a cero
+            if(Balance>0)
+            {
+                double days = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
+                Points += (double)(Balance - RealDebt * (decimal)(1 + (Math.Pow(1 + _interesPeriodico, days) - 1)))/1000d;
+            }
+
+            CalculateAveragePayment(normalizeTransactions);
 
             return tracking;
         }//Fin del metodo
@@ -204,6 +242,51 @@ namespace Control_de_cajas.Modelo
             }
 
             return result;
+        }
+
+        private static void CalculateAveragePayment(List<CustomerTransaction> transactions)
+        {
+            DateTime? startDate = null;
+            double totalDays = 0;
+            decimal totalPayment = 0m;
+            bool cuentaSaldada = true;
+            
+
+            if(transactions.Count>0)
+            {
+                startDate = transactions[0].Fecha;
+                cuentaSaldada = false;
+
+                foreach(CustomerTransaction t in transactions)
+                {
+                    if(t.Abono>0)
+                    {
+                        totalPayment += t.Abono;
+                    }
+
+                    if(t.Saldo == 0 && !cuentaSaldada)
+                    {
+                        totalDays += t.Fecha.Subtract(startDate.Value).TotalDays;
+                        cuentaSaldada = true;
+                    }
+
+                    if(t.Saldo != 0 && cuentaSaldada)
+                    {
+                        startDate = t.Fecha;
+                        cuentaSaldada = false;
+                    }
+                }
+
+                //Finalmente si la cuenta no está saldada entonces se calculan los días hasta la fecha actual
+                if(!cuentaSaldada)
+                {
+                    totalDays += DateTime.Now.Subtract(startDate.Value).TotalDays;
+                }
+
+
+                AveragePayment = totalDays > 0 ? totalPayment / (decimal)(totalDays / 30d) : (decimal?)null;
+
+            }
         }
 
     }

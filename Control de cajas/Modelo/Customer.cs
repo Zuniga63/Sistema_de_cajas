@@ -107,6 +107,10 @@ namespace Control_de_cajas.Modelo
         }
 
         private decimal _creditLimit;
+        /// <summary>
+        /// El limite de credito se recupera desde la base de datos pero este es modificado cuando su informacion
+        /// es pasada por el sistema puntuacion
+        /// </summary>
         public decimal Creditlimit
         {
             get { return _creditLimit; }
@@ -181,7 +185,7 @@ namespace Control_de_cajas.Modelo
             {
                 _cutoffDate = value;
                 OnPropertyChanged("CutoffDate");
-                DefineDaysPastDue();
+                //DefineDaysPastDue();
             }
         }
 

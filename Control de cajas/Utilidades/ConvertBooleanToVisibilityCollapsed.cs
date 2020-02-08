@@ -100,11 +100,11 @@ namespace Utilidades
             int? res = value as int?;
             if (res != null && res.HasValue)
             {
-                if (res.Value<=0)
+                if (res.Value<=30)
                 {
                     return new SolidColorBrush(Colors.LightGreen);
                 }
-                else if(res.Value<=30)
+                else if(res.Value<=45)
                 {
                     return new SolidColorBrush(Colors.LightSalmon);
                 }
