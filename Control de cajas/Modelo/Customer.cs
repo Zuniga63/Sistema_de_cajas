@@ -97,11 +97,11 @@ namespace Control_de_cajas.Modelo
                 OnPropertyChanged("Balance");
                 if(Balance>0)
                 {
-                    PoseeSaldo = true;
+                    HasDebt = true;
                 }
                 else
                 {
-                    PoseeSaldo = false;
+                    HasDebt = false;
                 }
             }
         }
@@ -120,6 +120,9 @@ namespace Control_de_cajas.Modelo
                 OnPropertyChanged("CreditLimit");
             }
         }
+
+        private decimal _creditLimitBasic;
+        public decimal CreditlimitBasic => _creditLimitBasic;
 
         //++++++++++++++++++++++++++++++++++++++++++++
         //Informacion obtenida aplicando logica sobre las transacciones
@@ -156,11 +159,20 @@ namespace Control_de_cajas.Modelo
                 OnPropertyChanged("LastPayment");
                 if(value != null)
                 {
-                    PoseeAbono = true;
+                    if(value.HasValue && value.Value>0)
+                    {
+                        HasPayment = true;
+                        HasOnlyDebt = false;
+                    }
+                    else
+                    {
+                        HasOnlyDebt = true;
+                    }
                 }
                 else
                 {
-                    PoseeAbono = false;
+                    HasPayment = false;
+                    HasOnlyDebt = true;
                 }
             }
         }
@@ -173,21 +185,7 @@ namespace Control_de_cajas.Modelo
             set { _paymentPercentage = value; OnPropertyChanged("PaymentPercentage"); }
         }
 
-        private DateTime? _cutoffDate;
-        /// <summary>
-        /// Es la fecha de corte desde el ultimo pago realizado por el cliente o desde la fecha
-        /// de la primera factura
-        /// </summary>
-        public DateTime? CutoffDate
-        {
-            get { return _cutoffDate; }
-            set
-            {
-                _cutoffDate = value;
-                OnPropertyChanged("CutoffDate");
-                //DefineDaysPastDue();
-            }
-        }
+        
 
         private int _days;
         /// <summary>
@@ -225,37 +223,29 @@ namespace Control_de_cajas.Modelo
             get { return _averagePayment; }
             set { _averagePayment = value; OnPropertyChanged("AveragePayment"); }
         }
-
-        private bool _state;
-        public bool State
+        
+        private bool _hasOnlyDebt;
+        public bool HasOnlyDebt
         {
-            get { return _state; }
-            set { _state = value; OnPropertyChanged("State"); }
+            get { return _hasOnlyDebt; }
+            set { _hasOnlyDebt = value; OnPropertyChanged("HasOnlyDebt"); }
         }
 
-        private bool _poseeMora;
-        public bool PoseeMora
+        private bool _hasPayment;
+        public bool HasPayment
         {
-            get { return _poseeMora; }
-            set { _poseeMora = value; OnPropertyChanged("PoseeMora"); }
+            get { return _hasPayment; }
+            set { _hasPayment = value; OnPropertyChanged("HasPayment"); }
         }
 
-        private bool _poseeAbono;
-        public bool PoseeAbono
+        private bool _hasDebt;
+        public bool HasDebt
         {
-            get { return _poseeAbono; }
-            set { _poseeAbono = value; OnPropertyChanged("PoseeAbono"); }
-        }
-
-        private bool _poseeSaldo;
-        public bool PoseeSaldo
-        {
-            get { return _poseeSaldo; }
-            private set { _poseeSaldo = value; OnPropertyChanged("PoseeSaldo"); }
+            get { return _hasDebt; }
+            private set { _hasDebt = value; OnPropertyChanged("HasDebt"); }
         }
 
         public List<CustomerTransaction> Transactions { get; set; }
-        public List<PaymentTracking> PaymentsTracking { get; set; }
         public List<CustomerTracking> CustomerTracking { get; set; }
 
         public Customer(int customerID, int userID, string customerName, string observation,
@@ -270,34 +260,12 @@ namespace Control_de_cajas.Modelo
             _phone = phone;
             _balance = balance;
             _creditLimit = creditLimit;
+            _creditLimitBasic = creditLimit;
 
             Transactions = new List<CustomerTransaction>();
-            PaymentsTracking = new List<PaymentTracking>();
             CustomerTracking = new List<CustomerTracking>();
         }
 
-        public void UpdateTransactions(List<CustomerTransaction> transactions)
-        {
-            //TODO
-        }
-        /// <summary>
-        /// Este metodo determina los dias que se estan en mora
-        /// </summary>
-        private void DefineDaysPastDue()
-        {
-            DateTime now = DateTime.Now;
-
-            if (CutoffDate.HasValue && CutoffDate.Value < now)
-            {
-                Days = (int)now.Subtract(CutoffDate.Value).TotalDays;
-                PoseeMora = true;
-            }
-            else
-            {
-                Days = 0;
-                PoseeMora = false;
-            }
-            
-        }
+        
     }
 }
