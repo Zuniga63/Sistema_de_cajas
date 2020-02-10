@@ -671,84 +671,12 @@ namespace Control_de_cajas.Modelo
             PointsSystem.EstablecerParametros(0.35, 0.1);
 
             List<CustomerTransaction> transactions = ReadCustomerTransaction(customer);         //Las transacciones del clientes
-            List<PaymentTracking> paymentsTracking = new List<PaymentTracking>();               //Las estadisticas de pago del cliente
-            DateTime? cutOffDate = null;                //Fecha de corte
-            DateTime? paymentDate = null;               //Fecha del ultimo pago
-            DateTime? lastDateDebt = null;              //Fecha del ultimo compromiso adquirido
-            decimal? paymentAmount = null;              //Monto o saldo del ultimo pago realizado
-            decimal? debtAmount = null;                 //Es el monto del ultimo compromiso adquirido
-            double? paymentPercentage = null;           //Porcentaje de la deuda pagado
-            int points = 0;                             //Los puntos acumulados
-            decimal balance = 0m;
-            decimal? averagePayment = null;             //Es el promedio de pago del cliente
-            decimal acumulatePayment = 0m;           //Es el acumulado de los pagos del cliente
-
-            for (int index = 0; index < transactions.Count; index++)
-            {
-                CustomerTransaction t = transactions[index];
-                
-                if (index == 0)
-                {
-                    lastDateDebt = t.Fecha;
-                    cutOffDate = t.Fecha.AddDays(DateTime.DaysInMonth(t.Fecha.Year, t.Fecha.Month));
-                    debtAmount = t.Deuda;
-                }
-                else
-                {
-                    if (t.Abono > 0)
-                    {
-                        paymentDate = t.Fecha;
-                        paymentAmount = t.Abono;
-                        PaymentTracking pT = new PaymentTracking(cutOffDate.Value, paymentDate.Value, balance, paymentAmount.Value);
-                        paymentPercentage = pT.PaymentPercentage;
-                        
-                        //Si el saldo del cliente es cero entonces la fecha de corte se vuelve null
-                        if(t.Saldo==0)
-                        {
-                            cutOffDate = null;
-                        }
-                        else
-                        {
-                            cutOffDate = paymentDate.Value.AddDays(30);
-                        }
-                        
-                        points += pT.Points;
-                        acumulatePayment += t.Abono;
-
-                        /*
-                        if (points < 0)
-                        {
-                            points = 0;
-                        }
-                        */
-                        paymentsTracking.Add(pT);
-                        averagePayment = acumulatePayment / paymentsTracking.Count;
-                    }
-                    else
-                    {
-                        lastDateDebt = t.Fecha;
-                        debtAmount = t.Deuda;
-
-                        if (!cutOffDate.HasValue)
-                        {
-                            cutOffDate = lastDateDebt.Value.AddDays(30);
-                        }
-                    }
-                }
-
-                balance = t.Saldo;
-            }
-
-            //Finalmente se actualiza el cliente
-            
             
             customer.CustomerTracking = PointsSystem.DefineScore(transactions, customer);
-            customer.CutoffDate = cutOffDate;
             customer.LastPaymentDate = PointsSystem.DateOfLastPayment;
             customer.LastPayment = PointsSystem.LastPayment;
             customer.PaymentPercentage = PointsSystem.PaymentPercentage;
             customer.Transactions = transactions;
-            customer.PaymentsTracking = paymentsTracking;
             customer.Balance = PointsSystem.Balance;
             customer.Points = PointsSystem.Points;
             customer.LastDebtDate = PointsSystem.DateOfLastDebt;

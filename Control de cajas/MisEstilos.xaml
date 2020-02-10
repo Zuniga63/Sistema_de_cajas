@@ -93,9 +93,9 @@
 
     <LinearGradientBrush x:Key="GreenGradient" StartPoint="0,0" EndPoint="0,1">
         <GradientStopCollection>
-            <GradientStop Color="White" Offset="0"/>
-            <GradientStop Color="LightGreen" Offset="0.5"/>
-            <GradientStop Color="Green" Offset="1"/>
+            <GradientStop Color="LightGreen" Offset="0"/>
+            <GradientStop Color="Green" Offset="0.8"/>
+            <GradientStop Color="DarkGreen" Offset="1"/>
         </GradientStopCollection>
     </LinearGradientBrush>
 
@@ -148,7 +148,7 @@
     <Style x:Key="GreenButtom" TargetType="Button" BasedOn="{StaticResource ButtomBasico}">
         <Setter Property="Background" Value="{StaticResource GreenGradient}"/>
         <Setter Property="BorderBrush" Value="DarkGreen"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
     <Style x:Key="RedButtom" TargetType="Button" BasedOn="{StaticResource ButtomBasico}">
@@ -175,7 +175,7 @@
 
     <Style x:Key="EstiloCajaTextoSencilla" TargetType="TextBox" BasedOn="{StaticResource EstiloFuenteTextBox}">
         <Setter Property="Margin" Value="5"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="14"/>
         <EventSetter Event="GotFocus" Handler="Txt_GotFocus"/>
         <EventSetter Event="GotMouseCapture" Handler="Txt_GotMouseFocus"/>
         <EventSetter Event="LostFocus" Handler="Txt_LostFocus"/>
@@ -281,13 +281,13 @@
                     <TextBlock Style="{StaticResource Basica1}" Text="{Binding Balance, StringFormat={}{0:c}}" FontWeight="Bold" FontSize="16"/>
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource Basica1}" Visibility="{Binding PoseeAbono, Converter={StaticResource BoleanToVisivility}}">
+                <TextBlock Style="{StaticResource Basica1}" Visibility="{Binding HasPayment, Converter={StaticResource BoleanToVisivility}}">
                     Ultimo abono:
                     <TextBlock Style="{StaticResource Basica1}" Text="{Binding LastPayment, StringFormat={}{0:c}}"/>
                     <TextBlock Style="{StaticResource Basica1}" Text="{Binding PaymentPercentage, StringFormat={}({0:0.0%})}"/>
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource Basica1}" Text="{Binding Days, StringFormat=Días transcurridos: {0} dias}"/>
+                <TextBlock Style="{StaticResource Basica1}" Visibility="{Binding HasDebt, Converter={StaticResource BoleanToVisivility}}" Text="{Binding Days, StringFormat=Días transcurridos: {0} dias}"/>
 
                 <TextBlock Style="{StaticResource Basica1}" Text="{Binding Points, StringFormat=Puntos: {0:0.00}}" FontStyle="Italic" FontWeight="Bold"/>
                 

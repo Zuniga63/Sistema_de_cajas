@@ -80,7 +80,7 @@ namespace Control_de_cajas.Modelo
             List<CustomerTracking> tracking = new List<CustomerTracking>();
             List<CustomerTransaction> normalizeTransactions = NormalizeTransactions(transactions);
             ReloadClass();
-            decimal creditLimitBasic = customer.Creditlimit;
+            decimal creditLimitBasic = customer.CreditlimitBasic;
             
 
             foreach (CustomerTransaction t in normalizeTransactions)
@@ -100,6 +100,7 @@ namespace Control_de_cajas.Modelo
                     DateOfLastDebt = CurrentDate;
                     LastDebt = Balance;
 
+                    CreditLimit = creditLimitBasic;
                     //Se crea el registro de seguimiento y se agrega a la lista
                     CustomerTracking track = new CustomerTracking(CurrentDate.Value, Debt, Payment, Balance, DaysOfLastTransaction, RealDebt,
                         GrossProfit, NetProfit, FinancialCost, Points, CreditLimit);
