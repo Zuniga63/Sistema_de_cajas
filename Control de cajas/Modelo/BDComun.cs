@@ -439,7 +439,7 @@ namespace Control_de_cajas.Modelo
         {
             string query = "START TRANSACTION; ";
             query += "SET @box_id = (SELECT cashbox_id FROM transacction WHERE transacction_id = " + originalTransaction.ID +"); ";
-            query += string.Format("UPDATE cashbox SET balance = balance + {0} WHERE cashbox_id = @box_id; ", originalTransaction.Amount * -1);
+            query += string.Format("UPDATE cashbox SET balance = balance - {0} WHERE cashbox_id = @box_id; ", originalTransaction.Amount);
             query += "UPDATE transacction SET ";
             query += "transacction_date = " + PonerComillas(date.ToString("yyyy-MM-dd")) + ", ";
             query += "description = " + PonerComillas(description) + ", ";

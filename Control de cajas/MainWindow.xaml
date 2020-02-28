@@ -79,6 +79,7 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <TextBlock Style="{StaticResource Titulo2}">Cajas</TextBlock>
@@ -89,6 +90,7 @@
                                         </DockPanel>
 
                                         <Button Grid.Row="3" Margin="10,5,10,5" Style="{StaticResource GreenButtom}" Command="{Binding ActivateViewNewBox}">Nueva caja</Button>
+                                        <Button Grid.Row="4" Margin="10,5,10,5" Style="{StaticResource GreenButtom}" Command="{Binding Imprimir}">Abrir caja</Button>
                                     </Grid>
                                 </Grid>
 
