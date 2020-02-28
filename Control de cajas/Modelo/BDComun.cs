@@ -571,7 +571,7 @@ namespace Control_de_cajas.Modelo
         /// <returns></returns>
         public static bool AddDebt(int userId, int customerID, DateTime date, string description, decimal amount)
         {
-            string currentDate = PonerComillas(DateTime.Now.ToString("yyyy-MM-dd"));
+            string currentDate = PonerComillas(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
             description = PonerComillas(description);
             string dateString = PonerComillas(date.ToString("yyyy-MM-dd"));
@@ -581,8 +581,8 @@ namespace Control_de_cajas.Modelo
             query += string.Format("WHERE (user_id = {0} AND customer_id = {1}); ", userId, customerID);
             query += "INSERT INTO debt (customer_id, user_id, date_of_debt, description, amount) VALUES ";
             query += string.Format("({0}, {1}, {2}, {3}, {4});", customerID, userId, dateString, description, amount);
-            query += string.Format("INSERT INTO customer_update(customer_id, user_id, date_of_update) VALUES ");
-            query += string.Format("({0}, {1}, {2}); COMMIT;", customerID, userId, currentDate);
+            query += string.Format("INSERT INTO customer_update(customer_id, user_id, date_of_update, debt) VALUES ");
+            query += string.Format("({0}, {1}, {2}, {3}); COMMIT;", customerID, userId, currentDate, amount);
 
             if(ModificarTabla(query))
             {
@@ -594,7 +594,7 @@ namespace Control_de_cajas.Modelo
 
         public static bool AddPayment(int userId, int customerID, DateTime date, string observation, decimal amount, bool efectivo, bool tarjeta)
         {
-            string currentDate = PonerComillas(DateTime.Now.ToString("yyyy-MM-dd"));
+            string currentDate = PonerComillas(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
             observation = PonerComillas(observation);
             string dateString = PonerComillas(date.ToString("yyyy-MM-dd"));
@@ -605,8 +605,8 @@ namespace Control_de_cajas.Modelo
             query += "INSERT INTO payment (customer_id, user_id, date_of_payment, observation, amount, efectivo, tarjeta) VALUES ";
             query += string.Format("({0}, {1}, {2}, {3}, {4}, {5}, {6}); ", 
                 customerID, userId, dateString, observation, amount, efectivo, tarjeta);
-            query += string.Format("INSERT INTO customer_update(customer_id, user_id, date_of_update) VALUES ");
-            query += string.Format("({0}, {1}, {2}); COMMIT;", customerID, userId, currentDate);
+            query += string.Format("INSERT INTO customer_update(customer_id, user_id, date_of_update, payment) VALUES ");
+            query += string.Format("({0}, {1}, {2}, {3}); COMMIT;", customerID, userId, currentDate, amount);
 
             if (HacerConsulta(query))
             {
@@ -643,19 +643,44 @@ namespace Control_de_cajas.Modelo
         public static List<string> ConsultCustomersUpdate(DateTime date, int userID)
         {
             string currentDate = PonerComillas(date.ToString("yyyy-MM-dd"));
+            string limitDate = PonerComillas(date.AddDays(1).ToString("yyyy-MM-dd"));
+
             List<string> result = new List<string>();
 
-            string query = "SELECT DISTINCT t1.customer_name, t1.balance FROM customer as t1 ";
+            string query = "SELECT t1.customer_name, t2.payment, t2.debt FROM customer as t1 ";
             query += "JOIN customer_update as t2 ON t2.customer_id = t1.customer_id ";
-            query += string.Format("AND t2.date_of_update= {0} and t2.user_id = {1}", currentDate, userID);
+            query += string.Format("AND t2.date_of_update>= {0} and t2.date_of_update < {1} and t2.user_id = {2} ", currentDate, limitDate, userID);
+            query += "ORDER BY t2.date_of_update";
 
             if (HacerConsulta(query))
             {
                 while(reader.Read())
                 {
+                    string linea = "";
                     string customer = reader.GetString(0);
-                    customer += "(" + reader.GetDecimal(1).ToString("c") + ")";
-                    result.Add(customer);
+                    decimal? payemnt = reader.IsDBNull(1) ? (decimal?) null : reader.GetDecimal(1);
+                    decimal? debt = reader.IsDBNull(2) ? (decimal?)null : reader.GetDecimal(2);
+
+                    linea += customer;
+                    
+                    if(payemnt.HasValue || debt.HasValue)
+                    {
+                        if (payemnt.HasValue)
+                        {
+                            linea += string.Format("(Abono): {0:c}", payemnt.Value);
+                        }
+                        else
+                        {
+                            linea += string.Format("(Deuda): {0:c}", debt.Value);
+                        }
+
+                    }
+                    else
+                    {
+                        linea += "(Modificado): No hay datos";
+                    }
+
+                    result.Add(linea);
                 }
             }
 
