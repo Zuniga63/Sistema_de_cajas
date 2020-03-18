@@ -18,8 +18,8 @@ namespace Control_de_cajas.ViewModels
             EstablecerParametrosDeLaBD();
             ViewUser = new ViewUsers();
             ViewClientes = new ViewClientes();
-            ViewUser.IsSelected = false;
-            ViewClientes.IsSelected = true;
+            ViewUser.IsSelected = true;
+            ViewClientes.IsSelected = false;
         }
     }
 }

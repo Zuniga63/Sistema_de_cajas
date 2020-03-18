@@ -11,7 +11,7 @@ namespace Control_de_cajas.Modelo
     {
         public static string Server { get; set; }
         public static string UsserID { get; set; }
-        public static string Password { get; set; }
+        public static string Password { get; set; } 
         public static string DataBase { get; set; }
         public static string Error { get; set; }
 
@@ -363,8 +363,9 @@ namespace Control_de_cajas.Modelo
                     int id = reader.GetInt32("cashbox_id");
                     string name = reader.GetString("box_name");
                     decimal balance = reader.GetDecimal("balance");
-
-                    Cashbox cBox = new Cashbox(id, name, balance);
+                    DateTime? fechaDeCorte = reader.IsDBNull(4) ? (DateTime?) null : reader.GetDateTime(4);
+                    decimal? baseDeCaja = reader.IsDBNull(5) ? (decimal?)null : reader.GetDecimal(5);
+                    Cashbox cBox = new Cashbox(id, name, balance, fechaDeCorte, baseDeCaja);
                     result.Add(cBox);
                 }
             }
@@ -374,7 +375,7 @@ namespace Control_de_cajas.Modelo
 
         public static bool ReloadCashbox(Cashbox cashbox)
         {
-            string query = "SELECT box_name, balance FROM cashbox WHERE cashbox_id = " + cashbox.ID;
+            string query = "SELECT box_name, balance, date_of_close, base FROM cashbox WHERE cashbox_id = " + cashbox.ID;
             query += " LIMIT 1";
 
             if(HacerConsulta(query))
@@ -382,6 +383,8 @@ namespace Control_de_cajas.Modelo
                 reader.Read();
                 cashbox.BoxName = reader.GetString("box_name");
                 cashbox.Balance = reader.GetDecimal("balance");
+                cashbox.FechaDeCierre = reader.IsDBNull(2) ? (DateTime?) null : reader.GetDateTime("date_of_close");
+                cashbox.BaseDeCaja = reader.IsDBNull(3) ? (decimal?) null : reader.GetDecimal("base");
                 return true;
             }
 
@@ -392,7 +395,7 @@ namespace Control_de_cajas.Modelo
             decimal amount, List<int> categories)
         {
             description = PonerComillas(description);
-            string date = PonerComillas(transactionDate.ToString("yyyy-MM-dd"));
+            string date = PonerComillas(transactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
             string query = "START TRANSACTION; ";
             query += "INSERT INTO transacction(cashbox_id, user_id, transacction_date, description, amount) VALUES ";
@@ -435,13 +438,60 @@ namespace Control_de_cajas.Modelo
             return result;
         }
 
+        public static void ConsultAmountOfCategory(int category_id, int box_id, DateTime? lastClosed, out int count, out decimal amount)
+        {
+            count = 0;
+            amount = 0m;
+            string limitDate = "";
+            string query = "";
+
+            if(lastClosed.HasValue)
+            {
+                limitDate += string.Format("AND t1.transacction_date >= {0} AND t1.transacction_date<={1}",
+                    PonerComillas(lastClosed.Value.ToString("yyyy-MM-dd HH:mm:ss")),
+                    PonerComillas(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            }
+            else
+            {
+                limitDate += string.Format("AND t1.transacction_date<={0} ", PonerComillas(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            }
+
+            query = "SELECT COUNT(*), SUM(t1.amount) FROM transacction as t1 ";
+            query += "JOIN transacction_has_category AS t2 ON ";
+            query += "( t2.category_id = " + category_id + " AND t2.transacction_id = t1.transacction_id AND ";
+            query += "t1.cashbox_id = " + box_id + " ";
+            query += limitDate + ")"; 
+
+            if(HacerConsulta(query))
+            {
+                reader.Read();
+                count = reader.GetInt32(0);
+                amount = reader.IsDBNull(1) ? 0m : reader.GetDecimal(1);
+            }
+
+        }
+
+        /// <summary>
+        /// Este metodo actualiza los datos del cierre de caja
+        /// </summary>
+        /// <param name="cashboxId"></param>
+        /// <param name="dateOfClose"></param>
+        /// <param name="newBase"></param>
+        /// <returns></returns>
+        public static bool CloseBox(int cashboxId, DateTime dateOfClose, decimal newBase)
+        {
+            string date = PonerComillas(dateOfClose.ToString("yyyy-MM-dd HH:mm"));
+            string query = string.Format("UPDATE cashbox SET date_of_close = {0}, base = {1} WHERE cashbox_id = {2}", date, newBase, cashboxId);
+            return ModificarTabla(query);
+        }
+
         public static bool UpdateTransaction(CashboxTransaction originalTransaction, DateTime date, string description, decimal amount)
         {
             string query = "START TRANSACTION; ";
             query += "SET @box_id = (SELECT cashbox_id FROM transacction WHERE transacction_id = " + originalTransaction.ID +"); ";
             query += string.Format("UPDATE cashbox SET balance = balance - {0} WHERE cashbox_id = @box_id; ", originalTransaction.Amount);
             query += "UPDATE transacction SET ";
-            query += "transacction_date = " + PonerComillas(date.ToString("yyyy-MM-dd")) + ", ";
+            query += "transacction_date = " + PonerComillas(date.ToString("yyyy-MM-dd HH:mm:ss")) + ", ";
             query += "description = " + PonerComillas(description) + ", ";
             query += "amount = " + amount + " ";
             query += "WHERE transacction_id = " + originalTransaction.ID + "; ";
@@ -963,6 +1013,7 @@ namespace Control_de_cajas.Modelo
         /// <returns></returns>
         public static List<CashboxTransaction> RecoverTransaction(List<Category> categories, DateTime since, DateTime until)
         {
+            until = until.AddHours(23).AddMinutes(59).AddSeconds(59);
             List<CashboxTransaction> result = new List<CashboxTransaction>();
 
             string query = "";
@@ -1015,7 +1066,7 @@ namespace Control_de_cajas.Modelo
         private static string WriteQueryTableClass1(int categoryId, DateTime since, DateTime until)
         {
             string sinceText = PonerComillas(since.ToString("yyyy-MM-dd"));
-            string untilText = PonerComillas(until.ToString("yyyy-MM-dd"));
+            string untilText = PonerComillas(until.ToString("yyyy-MM-dd HH:mm:ss"));
 
             string query = "SELECT t1.transacction_id, t1.transacction_date, t1.description, t1.amount ";
             query += "FROM transacction as t1 JOIN transacction_has_category as t2 ";

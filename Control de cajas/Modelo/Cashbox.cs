@@ -33,11 +33,27 @@ namespace Control_de_cajas.Modelo
             set { _balance = value; OnPropertyChanged("Balance"); }
         }
 
-        public Cashbox(int id, string name, decimal balance)
+        private DateTime? _fechaDeCierre;
+        public DateTime? FechaDeCierre
+        {
+            get { return _fechaDeCierre; }
+            set { _fechaDeCierre = value; OnPropertyChanged("FechaDeCierre"); }
+        }
+
+        private decimal? _baseDeCaja;
+        public decimal? BaseDeCaja
+        {
+            get { return _baseDeCaja; }
+            set { _baseDeCaja = value; OnPropertyChanged("BaseDeCaja"); }
+        }
+
+        public Cashbox(int id, string name, decimal balance, DateTime? fechaDeCierre, decimal? baseDeCaja)
         {
             _id = id;
             _boxName = name;
             _balance = balance;
+            _fechaDeCierre = fechaDeCierre;
+            _baseDeCaja = baseDeCaja;
         }
 
         public override string ToString()

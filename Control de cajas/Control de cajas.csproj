@@ -75,6 +75,7 @@
     <Compile Include="Utilidades\Notificador.cs" />
     <Compile Include="ViewModels\ConsultTransactionView.cs" />
     <Compile Include="ViewModels\Report.cs" />
+    <Compile Include="ViewModels\ReportOfBoxClosed.cs" />
     <Compile Include="ViewModels\ViewCategorias.cs" />
     <Compile Include="ViewModels\ViewClientes.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />

@@ -164,18 +164,7 @@ namespace Control_de_cajas.Modelo
             customer.Creditlimit = CreditLimit;
 
             //Se actualiza los días de este periodo que se calculan desde la ultima transaccion o desde el ultimo pago del cliente
-            if(DateOfLastPayment.HasValue && Balance>0)
-            {
-                DaysOfThisPeriod = DateTime.Now.Subtract(DateOfLastPayment.Value).TotalDays;
-            }
-            else if(CurrentDate.HasValue && Balance>0)
-            {
-                DaysOfThisPeriod = DateTime.Now.Subtract(CurrentDate.Value).TotalDays;
-            }
-            else
-            {
-                DaysOfThisPeriod = 0d;
-            }
+            DaysOfThisPeriod = DefinirDiasDelPeriodo(normalizeTransactions);
 
             //Ahora se ajusta la puntuacion del cliente como si realizará el pago el día de hoy, solo se hace para clientes con
             //balance superior a cero
@@ -288,6 +277,46 @@ namespace Control_de_cajas.Modelo
                 AveragePayment = totalDays > 0 ? totalPayment / (decimal)(totalDays / 30d) : (decimal?)null;
 
             }
+        }
+
+        /// <summary>
+        /// Este metodo determina el numero de dias desde la ultima transaccion valida
+        /// </summary>
+        /// <param name="transacciones"></param>
+        /// <returns></returns>
+        private static double DefinirDiasDelPeriodo(List<CustomerTransaction> transacciones)
+        {
+            //Si el cliente no tiene transacciones o si el saldo es cero entonces el numero de dias es cero
+            DateTime fechaDeCorte = DateTime.Now;
+            decimal saldoAnterior = 0m;
+
+            foreach(CustomerTransaction t in transacciones)
+            {
+                //Si el saldo anterior es igual a cero, entonces la fecha de corte se actualiza con la nueva transaccion
+                //en caso contrario la fecha de corte solo se actualiza si se realiza un abono
+                if(saldoAnterior == 0m)
+                {
+                    fechaDeCorte = t.Fecha;
+                }
+                else if(t.Abono>0)
+                {
+                    fechaDeCorte = t.Fecha;
+                }
+
+                saldoAnterior = t.Saldo;
+            }
+
+            //Si al finalizar el saldo anterior es cero entonces el numero de días de periodo de corte es 0
+            if(saldoAnterior == 0m)
+            {
+                return 0d;
+            }
+            else
+            {
+                return DateTime.Now.Subtract(fechaDeCorte).TotalDays;
+            }
+
+
         }
 
     }
